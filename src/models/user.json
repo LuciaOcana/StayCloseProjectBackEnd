@@ -1,0 +1,18 @@
+[
+    {
+        "username": "laura8",
+        "name": "Laura Fernandez Garcia",
+        "email": "laurafernandez@gmail.com",
+        "password": "123456",
+        "actualUbication": [],
+        "inHome": false
+    },
+    {
+       "username": "lidon18",
+        "name": "Lidon Garcia Campos",
+        "email": "lidongarcia@gmail.com",
+        "password": "67890",
+        "actualUbication": [],
+        "inHome": false 
+    }
+]
