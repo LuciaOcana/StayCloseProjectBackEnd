@@ -15,12 +15,12 @@ export const getEntries = {
         return await userofDB.create(entry);
     },
     // Actualizar un usuario por ID
-    update: async(id:string,body:object)=>{
+    updateUserById: async(id:string,body:object)=>{
         console.log(body);
         return await userofDB.findByIdAndUpdate(id,body,{$new:true});
     },
     // Eliminar un usuario por ID
-    delete: async(id:string)=>{
+    deleteUserById: async(id:string)=>{
         return await userofDB.findByIdAndDelete(id);
     }
 }

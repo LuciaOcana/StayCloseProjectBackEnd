@@ -1,5 +1,5 @@
-import { model, ObjectId, Schema, } from "mongoose";
-import { userofDB } from './user';
+import { model, Schema, } from "mongoose";
+//import { userofDB } from './user';
 
 export interface eventInterface{
    //eventID: string, *¿PONEMOS UNA ID NOSOTRAS O ESCOGEMOS LA QUE ASIGNA MONGO POR DEFECTO?* 

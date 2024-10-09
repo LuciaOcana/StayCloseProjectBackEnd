@@ -1,3 +1,3 @@
 ## StayCloseApp
 
-Funcions i routes funcionant
+- Routes and controllers separated and running
