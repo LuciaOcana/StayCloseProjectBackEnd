@@ -1,5 +1,5 @@
-import { model, ObjectId, Schema } from "mongoose";
-import { userofDB } from './user';
+import { model,  Schema } from "mongoose";
+
 
 export interface chatInterface{
     //chatID: string, *¿PONEMOS UNA ID NOSOTRAS O ESCOGEMOS LA QUE ASIGNA MONGO POR DEFECTO?* 

@@ -4,7 +4,7 @@ export const getEntries = {
 
     // Obtener todos los usuarios
     getAll: async()=>{
-    return await userofDB.find();
+    return await userofDB.find({});
     },
     // Buscar usuario por ID
     findById: async(id:string)=>{
