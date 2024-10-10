@@ -58,6 +58,7 @@ function createUser(req, res) {
             console.log('creating user');
             const newUser = { username, name, email, password };
             const user = yield userServices.getEntries.create(newUser);
+            console.log(user);
             return res.json({
                 message: "User created",
                 user

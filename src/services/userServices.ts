@@ -3,8 +3,17 @@ import { userofDB } from '../models/user'
 export const getEntries = {
 
     // Obtener todos los usuarios
-    getAll: async()=>{
-    return await userofDB.find({});
+    getAll: async (page = 1, limit = 10) => {
+        // Calcular el número de documentos que deben saltarse
+        const skip = (page - 1) * limit;
+    
+        // Realizar la consulta con paginación
+        const users = await userofDB.find()
+                                    .skip(skip)
+                                    .limit(limit);
+    
+        // Retornar los usuarios encontrados
+        return users;
     },
     // Buscar usuario por ID
     findById: async(id:string)=>{
