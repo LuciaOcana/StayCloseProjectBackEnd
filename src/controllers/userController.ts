@@ -15,12 +15,12 @@ export async function getUsers(_req: Request, res: Response): Promise<Response> 
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     try {
-        const { username, name, email, password } = req.body as userInterface;
+        const { username, name, email, password, actualUbication: [], inHome } = req.body as userInterface;
         console.log('creating user');
 
-        const newUser: Partial<userInterface> = { username, name, email, password };
+        const newUser: Partial<userInterface> = { username, name, email, password, actualUbication: [], inHome };
         const user = await userServices.getEntries.create(newUser);
-        console.log(user);
+        console.log('hi', user);
 
         return res.json({
             message: "User created",

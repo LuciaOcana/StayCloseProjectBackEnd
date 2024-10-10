@@ -21,6 +21,7 @@ export const getEntries = {
     },
     // Crear un nuevo usuario
     create: async(entry:object)=>{
+        console.log(entry);
         return await userofDB.create(entry);
     },
     // Actualizar un usuario por ID

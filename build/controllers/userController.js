@@ -54,11 +54,11 @@ function getUsers(_req, res) {
 function createUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { username, name, email, password } = req.body;
+            const { username, name, email, password, actualUbication: [], inHome } = req.body;
             console.log('creating user');
-            const newUser = { username, name, email, password };
+            const newUser = { username, name, email, password, actualUbication: [], inHome };
             const user = yield userServices.getEntries.create(newUser);
-            console.log(user);
+            console.log('hi', user);
             return res.json({
                 message: "User created",
                 user
