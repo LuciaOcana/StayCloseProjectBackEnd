@@ -2,7 +2,6 @@ import { model, Schema } from "mongoose";
 
 
 export interface postInterface{
-    //postID: string, *¿PONEMOS UNA ID NOSOTRAS O ESCOGEMOS LA QUE ASIGNA MONGO POR DEFECTO?* 
     author: Schema.Types.ObjectId,
     postType: string,
     content: string,

@@ -18,7 +18,7 @@ export const userSchema = new Schema<userInterface>({
     email: { type: String, required: true },
     password: { type: String, required: true },
     actualUbication: [],
-    inHome: { type: Boolean, required: true },
+    inHome: { type: Boolean},
        
     //experiences: [{ type: Schema.Types.ObjectId, ref: 'experiencias' }] // Vector de experiencias con referencia a su modelo
 })

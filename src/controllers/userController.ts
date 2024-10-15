@@ -7,6 +7,11 @@ export async function getUsers(_req: Request, res: Response): Promise<Response> 
    try {
     console.log("Get users");
     const users = await userServices.getEntries.getAll();
+    if (!users) {
+        console.error("Users is undefined or null");
+        return res.json([]);
+    }
+    console.log("users", users);
     return res.json(users);
    } catch (error) {
     return res.status(500).json({ error:'Failes to get users'});
@@ -15,10 +20,10 @@ export async function getUsers(_req: Request, res: Response): Promise<Response> 
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     try {
-        const { username, name, email, password, actualUbication: [], inHome } = req.body as userInterface;
-        console.log('creating user');
+        const { username, name, email, password } = req.body as userInterface;
+        //console.log('creating user');
 
-        const newUser: Partial<userInterface> = { username, name, email, password, actualUbication: [], inHome };
+        const newUser: Partial<userInterface> = { username, name, email, password};
         const user = await userServices.getEntries.create(newUser);
         console.log('hi', user);
 
