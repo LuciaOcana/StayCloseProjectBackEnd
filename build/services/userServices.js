@@ -40,5 +40,8 @@ exports.getEntries = {
     // Eliminar un usuario por ID
     deleteUserById: (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield user_1.userofDB.findByIdAndDelete(id);
+    }),
+    findUserByUsername: (username) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield user_1.userofDB.findOne({ username: username });
     })
 };

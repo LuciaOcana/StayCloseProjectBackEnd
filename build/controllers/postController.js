@@ -32,7 +32,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
 exports.getPosts = getPosts;
 exports.createPost = createPost;
 //import { userInterface } from "../models/user";
@@ -68,22 +67,6 @@ function createPost(req, res) {
         catch (error) {
             console.error("Error creating post:", error);
             return res.status(500).json({ error: 'Failed to create post' });
-=======
-exports.getUsers = getUsers;
-//import { userInterface } from "../models/user";
-const userServices = __importStar(require("../services/userServices"));
-//import { userInterface } from "../models/user";
-function getUsers(_req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            console.log("Get users");
-            const users = yield userServices.getEntries.getAll();
-            console.log("users", users);
-            return res.json(users);
-        }
-        catch (error) {
-            return res.status(500).json({ error: 'Failes to get users' });
->>>>>>> 4086f75c240e9f4d4c75a4dec697735471094f3c
         }
     });
 }
