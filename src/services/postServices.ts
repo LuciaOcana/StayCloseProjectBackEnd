@@ -30,5 +30,9 @@ export const getEntries = {
     // Eliminar un post por ID
     delete: async(id:string)=>{
         return await postofDB.findByIdAndDelete(id);
+    },
+    // Tots els posts d'un usuari
+    findByAuthor: async(id:string)=>{
+        return await postofDB.find({author: id});
     }
 }

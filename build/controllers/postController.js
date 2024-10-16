@@ -34,6 +34,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPosts = getPosts;
 exports.createPost = createPost;
+exports.updatePost = updatePost;
+exports.deletePost = deletePost;
+exports.getPost = getPost;
+exports.getAuthorPosts = getAuthorPosts;
 //import { userInterface } from "../models/user";
 const postServices = __importStar(require("../services/postServices"));
 //import { post } from "@typegoose/typegoose";
@@ -67,6 +71,76 @@ function createPost(req, res) {
         catch (error) {
             console.error("Error creating post:", error);
             return res.status(500).json({ error: 'Failed to create post' });
+        }
+    });
+}
+function updatePost(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            console.log('Get post');
+            const id = req.params.id;
+            const { author, postType, content, image, postDate } = req.body;
+            const updatedPost = { author, postType, content, image, postDate };
+            const post = yield postServices.getEntries.update(id, updatedPost);
+            if (!post) {
+                return res.status(404).json({ error: 'Post with id ${id} not found' });
+            }
+            return res.json({
+                message: "Post updated",
+                post
+            });
+        }
+        catch (error) {
+            return res.status(500).json({ error: 'Failed to update post' });
+        }
+    });
+}
+function deletePost(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            console.log('Delete post');
+            const id = req.params.id;
+            const post = yield postServices.getEntries.delete(id);
+            if (!post) {
+                return res.status(404).json({ error: 'Post with id ${id} not found' });
+            }
+            return res.json(post);
+        }
+        catch (error) {
+            return res.status(500).json({ error: 'Failed to get post' });
+        }
+    });
+}
+function getPost(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            console.log('Get post');
+            const id = req.params.id;
+            const post = yield postServices.getEntries.findById(id);
+            if (!post) {
+                return res.status(404).json({ error: `User with id ${id} not found` });
+            }
+            return res.json(post);
+        }
+        catch (error) {
+            return res.status(500).json({ error: 'Failed to get post' });
+        }
+    });
+}
+function getAuthorPosts(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const idAuthor = req.params.id;
+            console.log('Get post from Author with id: ', idAuthor);
+            const posts = yield postServices.getEntries.findByAuthor(idAuthor);
+            console.log(posts);
+            if (!posts) {
+                return res.status(404).json({ error: `User with id ${idAuthor} not found` });
+            }
+            return res.json(posts);
+        }
+        catch (error) {
+            return res.status(500).json({ error: 'Failed to get post' });
         }
     });
 }

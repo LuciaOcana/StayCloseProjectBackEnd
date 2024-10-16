@@ -38,5 +38,9 @@ exports.getEntries = {
     // Eliminar un post por ID
     delete: (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield post_1.postofDB.findByIdAndDelete(id);
+    }),
+    // Tots els posts d'un usuari
+    findByAuthor: (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield post_1.postofDB.find({ author: id });
     })
 };

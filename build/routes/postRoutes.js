@@ -10,13 +10,12 @@ const postRouter = express_1.default.Router();
 postRouter.get("/", postController_1.getPosts);
 // Ruta per crear post
 postRouter.post("/", postController_1.createPost);
-postRouter.get("/");
-// Ruta per crear post
-postRouter.post("/");
 //Ruta per obtenir post per id
-postRouter.get("/:id");
+postRouter.get("/:id", postController_1.getPost);
 //Ruta per obtenir tots els post d'un usuari
-postRouter.get("/:id/:author");
+postRouter.get("/:id/authorPosts", postController_1.getAuthorPosts);
 //Ruta per eliminar post per id
-postRouter.delete("/:id");
+postRouter.delete("/:id", postController_1.deletePost);
+//Ruta per actialitzar usuari per id
+postRouter.put("/:id", postController_1.updatePost);
 exports.default = postRouter;
