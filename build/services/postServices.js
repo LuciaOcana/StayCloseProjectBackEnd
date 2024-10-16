@@ -10,27 +10,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEntries = void 0;
-const user_1 = require("../models/user");
+const post_1 = require("../models/post");
 exports.getEntries = {
-    // Obtener todos los usuarios
-    getAll: () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield user_1.userofDB.find();
+    // Obtener todos los post
+    getAll: (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
+        // Realizar la consulta con paginación
+        const posts = yield post_1.postofDB.find()
+            .skip(skip)
+            .limit(limit);
+        // Retornar los usuarios encontrados
+        return posts;
     }),
-    // Buscar usuario por ID
+    //Buscar post por ID
     findById: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield user_1.userofDB.findById(id);
+        return yield post_1.postofDB.findById(id);
     }),
-    // Crear un nuevo usuario
+    // Crear un nuevo post
     create: (entry) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield user_1.userofDB.create(entry);
+        return yield post_1.postofDB.create(entry);
     }),
-    // Actualizar un usuario por ID
+    // Actualizar un post por ID
     update: (id, body) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(body);
-        return yield user_1.userofDB.findByIdAndUpdate(id, body, { $new: true });
+        return yield post_1.postofDB.findByIdAndUpdate(id, body, { $new: true });
     }),
-    // Eliminar un usuario por ID
+    // Eliminar un post por ID
     delete: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield user_1.userofDB.findByIdAndDelete(id);
+        return yield post_1.postofDB.findByIdAndDelete(id);
     })
 };

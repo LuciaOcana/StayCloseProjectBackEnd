@@ -2,7 +2,6 @@ import { model, Schema } from "mongoose";
 
 
 export interface postInterface{
-    //postID: string, *¿PONEMOS UNA ID NOSOTRAS O ESCOGEMOS LA QUE ASIGNA MONGO POR DEFECTO?* 
     author: Schema.Types.ObjectId,
     postType: string,
     content: string,
@@ -17,7 +16,7 @@ export const postSchema = new Schema<postInterface>({
     postType: { type: String, required: true },
     content: { type: String, required: true },
     image: { type: String, required: true },
-    postDate: { type: Date, required: true }
+    postDate: { type: Date, required: false }
 })
 
 export const postofDB = model<postInterface>('post',postSchema)

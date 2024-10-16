@@ -1,0 +1,16 @@
+[
+    {
+        "author": "67094fb492c7b046878ce0ca",
+        "postType": "Musica",
+        "content": "este es mi primer post",
+        "image": "image",
+        "postDate": "23/10/2024"
+    },
+    {
+        "author": "67094fb492c7b046878ce0ca",
+        "postType": "Musica",
+        "content": "este es mi segundo post",
+        "image": "image",
+        "postDate": "24/10/2024"
+    }
+]

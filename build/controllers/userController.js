@@ -44,6 +44,11 @@ function getUsers(_req, res) {
         try {
             console.log("Get users");
             const users = yield userServices.getEntries.getAll();
+            if (!users) {
+                console.error("Users is undefined or null");
+                return res.json([]);
+            }
+            console.log("users", users);
             return res.json(users);
         }
         catch (error) {
@@ -54,9 +59,9 @@ function getUsers(_req, res) {
 function createUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { username, name, email, password, actualUbication: [], inHome } = req.body;
-            console.log('creating user');
-            const newUser = { username, name, email, password, actualUbication: [], inHome };
+            const { username, name, email, password } = req.body;
+            //console.log('creating user');
+            const newUser = { username, name, email, password };
             const user = yield userServices.getEntries.create(newUser);
             console.log('hi', user);
             return res.json({

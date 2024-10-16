@@ -32,5 +32,8 @@ export const getEntries = {
     // Eliminar un usuario por ID
     deleteUserById: async(id:string)=>{
         return await userofDB.findByIdAndDelete(id);
+    },
+    findUserByUsername: async(username:string) =>{
+        return await userofDB.findOne({username: username})
     }
 }

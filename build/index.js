@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
-const eventRoutes_1 = __importDefault(require("./routes/eventRoutes"));
-//import postRouter from './routes/postRoutes'
+//import eventRouter from './routes/eventRoutes'
+const postRoutes_1 = __importDefault(require("./routes/postRoutes"));
 const databaseConection_1 = require("./database/databaseConection");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -20,8 +20,8 @@ app.get('/ping', (_req, res) => {
     res.send('pinged');
 });
 app.use('/api/user', userRoutes_1.default);
-//app.use('/api/posts', postRouter)
-app.use('/api/events', eventRoutes_1.default);
+app.use('/api/posts', postRoutes_1.default);
+//app.use('/api/events', eventRouter)
 app.listen(PORT, () => {
     console.log('el servidor esta escuchando en el puerto ' + PORT);
 });

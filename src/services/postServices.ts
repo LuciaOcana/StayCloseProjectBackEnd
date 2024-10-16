@@ -1,26 +1,34 @@
-import { userofDB } from '../models/user'
+import { postofDB } from '../models/post'
 
 export const getEntries = {
 
-    // Obtener todos los usuarios
-    getAll: async()=>{
-    return await userofDB.find();
+    // Obtener todos los post
+    getAll: async(page = 1, limit = 10)=>{
+        const skip = (page - 1) * limit;
+    
+        // Realizar la consulta con paginación
+        const posts = await postofDB.find()
+                                    .skip(skip)
+                                    .limit(limit);
+    
+        // Retornar los usuarios encontrados
+        return posts;
     },
-    // Buscar usuario por ID
+    //Buscar post por ID
     findById: async(id:string)=>{
-        return await userofDB.findById(id);
+        return await postofDB.findById(id);
     },
-    // Crear un nuevo usuario
+    // Crear un nuevo post
     create: async(entry:object)=>{
-        return await userofDB.create(entry);
+        return await postofDB.create(entry);
     },
-    // Actualizar un usuario por ID
+    // Actualizar un post por ID
     update: async(id:string,body:object)=>{
         console.log(body);
-        return await userofDB.findByIdAndUpdate(id,body,{$new:true});
+        return await postofDB.findByIdAndUpdate(id,body,{$new:true});
     },
-    // Eliminar un usuario por ID
+    // Eliminar un post por ID
     delete: async(id:string)=>{
-        return await userofDB.findByIdAndDelete(id);
+        return await postofDB.findByIdAndDelete(id);
     }
 }
