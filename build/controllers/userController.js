@@ -37,6 +37,7 @@ exports.createUser = createUser;
 exports.getUser = getUser;
 exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
+exports.login = login;
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
 function getUsers(_req, res) {
@@ -59,9 +60,9 @@ function getUsers(_req, res) {
 function createUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { username, name, email, password } = req.body;
+            const { username, name, email, password, admin } = req.body;
             //console.log('creating user');
-            const newUser = { username, name, email, password };
+            const newUser = { username, name, email, password, admin };
             const user = yield userServices.getEntries.create(newUser);
             console.log('hi', user);
             return res.json({
@@ -121,6 +122,30 @@ function deleteUser(req, res) {
                 return res.status(404).json({ error: `User with id ${id} not found` });
             }
             return res.json(user);
+        }
+        catch (error) {
+            return res.status(500).json({ error: 'Failed to get user' });
+        }
+    });
+}
+function login(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { username, password } = req.body;
+            const login = { username, password };
+            const loggedUser = yield userServices.getEntries.findUserByUsername(login.username);
+            if (!loggedUser) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            if (login.password == loggedUser.password) {
+                if (loggedUser.admin == true)
+                    return res.json({
+                        message: "User logged in",
+                        loggedUser
+                    });
+                return res.status(400).json({ error: 'You are not admin' });
+            }
+            return res.status(400).json({ error: 'Incorrect password' });
         }
         catch (error) {
             return res.status(500).json({ error: 'Failed to get user' });

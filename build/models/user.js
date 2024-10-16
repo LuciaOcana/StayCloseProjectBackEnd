@@ -9,6 +9,7 @@ exports.userSchema = new mongoose_1.Schema({
     password: { type: String, required: true },
     actualUbication: [],
     inHome: { type: Boolean },
+    admin: { type: Boolean }
     //experiences: [{ type: Schema.Types.ObjectId, ref: 'experiencias' }] // Vector de experiencias con referencia a su modelo
 });
 exports.userofDB = (0, mongoose_1.model)('user', exports.userSchema);

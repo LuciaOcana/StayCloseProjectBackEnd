@@ -7,10 +7,12 @@ export interface userInterface{
     password: string,
     actualUbication: [],
     inHome: boolean,
+    admin: boolean
 }
 
 export type UsersInterfacePublicInfo = Pick<userInterface, 'username' | 'name' >
 export type newUserInfo = Omit<userInterface,'id'>
+export type login = Pick<userInterface, 'username' | 'password' >
 
 export const userSchema = new Schema<userInterface>({
     username: { type: String, required: true },
@@ -19,6 +21,7 @@ export const userSchema = new Schema<userInterface>({
     password: { type: String, required: true },
     actualUbication: [],
     inHome: { type: Boolean},
+    admin: {type: Boolean}
        
     //experiences: [{ type: Schema.Types.ObjectId, ref: 'experiencias' }] // Vector de experiencias con referencia a su modelo
 })

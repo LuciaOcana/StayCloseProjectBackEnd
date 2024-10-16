@@ -1,7 +1,5 @@
 import express from 'express';
-//import * as userServices from '../services/userServices'
-import { getUsers, createUser, getUser, updateUser, deleteUser } from '../controllers/userController';
-
+import { getUsers, createUser, getUser, updateUser, deleteUser, login } from '../controllers/userController';
 
 const router = express.Router();
 
@@ -15,10 +13,13 @@ router.post("/", createUser);
 router.get("/:id", getUser);
 
 //Ruta per actialitzar usuari per id
-router.put("/:id", updateUser);
+router.put("/update/:id", updateUser);
 
 //Ruta per eliminar user per id
 router.delete("/:id", deleteUser);
+
+//Ruta per fer el login
+router.put("/login", login);
 
 
 export default router 
