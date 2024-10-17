@@ -65,10 +65,7 @@ function createUser(req, res) {
             const newUser = { username, name, email, password, admin };
             const user = yield userServices.getEntries.create(newUser);
             console.log('hi', user);
-            return res.json({
-                message: "User created",
-                user
-            });
+            return res.json(user);
         }
         catch (error) {
             return res.status(500).json({ error: 'Failed to create user' });
@@ -94,7 +91,7 @@ function getUser(req, res) {
 function updateUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log('Get user');
+            console.log('Update user');
             const id = req.params.id;
             const { username, name, email, password } = req.body;
             const updatedUser = { username, name, email, password };

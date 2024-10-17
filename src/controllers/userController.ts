@@ -27,10 +27,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
         const user = await userServices.getEntries.create(newUser);
         console.log('hi', user);
 
-        return res.json({
-            message: "User created",
-            user
-          });
+        return res.json(user);
     } catch (error) {
         return res.status(500).json({ error: 'Failed to create user' });
     }
@@ -53,7 +50,7 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
     try{
-        console.log('Get user');
+        console.log('Update user');
         const id = req.params.id;
         const { username, name, email, password } = req.body as userInterface;
         const updatedUser: Partial<userInterface> = { username, name, email, password };

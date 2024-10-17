@@ -13,7 +13,7 @@ exports.getEntries = void 0;
 const user_1 = require("../models/user");
 exports.getEntries = {
     // Obtener todos los usuarios
-    getAll: (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 10) {
+    getAll: (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 20) {
         // Calcular el número de documentos que deben saltarse
         const skip = (page - 1) * limit;
         // Realizar la consulta con paginación
