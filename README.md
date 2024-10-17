@@ -16,7 +16,7 @@
 - getPost
 - getPosts
 
----------------Post functions---------------
+---------------To execute---------------
 - tsc  
 - node build/index.js  
 
