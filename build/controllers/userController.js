@@ -40,11 +40,15 @@ exports.deleteUser = deleteUser;
 exports.login = login;
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
-function getUsers(_req, res) {
+function getUsers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log("Get users");
-            const users = yield userServices.getEntries.getAll();
+            const page = Number(req.params.page);
+            const limit = Number(req.params.limit);
+            const paginator = { page, limit };
+            console.log(paginator);
+            const users = yield userServices.getEntries.getAll(paginator.page, paginator.limit);
             if (!users) {
                 console.error("Users is undefined or null");
                 return res.json([]);

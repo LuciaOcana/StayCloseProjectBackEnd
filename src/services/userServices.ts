@@ -3,7 +3,7 @@ import { userofDB } from '../models/user'
 export const getEntries = {
 
     // Obtener todos los usuarios
-    getAll: async (page = 1, limit = 20) => {
+    getAll: async (page: number , limit: number ) => {
         // Calcular el número de documentos que deben saltarse
         const skip = (page - 1) * limit;
     

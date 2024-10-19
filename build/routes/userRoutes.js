@@ -7,11 +7,11 @@ const express_1 = __importDefault(require("express"));
 const userController_1 = require("../controllers/userController");
 const router = express_1.default.Router();
 // Ruta para obtener todos los usuarios
-router.get("/", userController_1.getUsers);
+router.get("/getUsers/:page/:limit", userController_1.getUsers);
 // Ruta per crear usuari
 router.post("/", userController_1.createUser);
 //Ruta per obtenir usuari per id
-router.get("/:id", userController_1.getUser);
+router.get("/getUser/:id", userController_1.getUser);
 //Ruta per actialitzar usuari per id
 router.put("/update/:id", userController_1.updateUser);
 //Ruta per eliminar user per id

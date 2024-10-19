@@ -4,13 +4,13 @@ import { getUsers, createUser, getUser, updateUser, deleteUser, login } from '..
 const router = express.Router();
 
 // Ruta para obtener todos los usuarios
-router.get("/", getUsers);
+router.get("/getUsers/:page/:limit", getUsers);
 
 // Ruta per crear usuari
 router.post("/", createUser);
 
 //Ruta per obtenir usuari per id
-router.get("/:id", getUser);
+router.get("/getUser/:id", getUser);
 
 //Ruta per actialitzar usuari per id
 router.put("/update/:id", updateUser);

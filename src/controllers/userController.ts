@@ -2,11 +2,16 @@ import { Request, Response } from "express";
 //import { userInterface } from "../models/user";
 import * as userServices from "../services/userServices";
 import { login, userInterface } from "../models/user";
+import { paginatorInterface } from "../interfaces/paginator";
 
-export async function getUsers(_req: Request, res: Response): Promise<Response> {
+export async function getUsers(req: Request, res: Response): Promise<Response> {
    try {
     console.log("Get users");
-    const users = await userServices.getEntries.getAll();
+    const page = Number(req.params.page);
+    const limit = Number(req.params.limit);
+    const paginator = {page, limit} as paginatorInterface
+    console.log(paginator);
+    const users = await userServices.getEntries.getAll(paginator.page, paginator.limit);
     if (!users) {
         console.error("Users is undefined or null");
         return res.json([]);
