@@ -12,12 +12,13 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
     const paginator = {page, limit} as paginatorInterface
     console.log(paginator);
     const users = await userServices.getEntries.getAll(paginator.page, paginator.limit);
+    const totalUsers = await userServices.getEntries.countTotalUsers(); // Asumiendo que tienes una función para contar usuarios
     if (!users) {
         console.error("Users is undefined or null");
         return res.json([]);
     }
     console.log("users", users);
-    return res.json(users);
+    return res.json({users, totalUsers});
    } catch (error) {
     return res.status(500).json({ error:'Failes to get users'});
    }

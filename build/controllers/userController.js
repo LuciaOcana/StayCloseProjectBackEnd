@@ -49,12 +49,13 @@ function getUsers(req, res) {
             const paginator = { page, limit };
             console.log(paginator);
             const users = yield userServices.getEntries.getAll(paginator.page, paginator.limit);
+            const totalUsers = yield userServices.getEntries.countTotalUsers(); // Asumiendo que tienes una función para contar usuarios
             if (!users) {
                 console.error("Users is undefined or null");
                 return res.json([]);
             }
             console.log("users", users);
-            return res.json(users);
+            return res.json({ users, totalUsers });
         }
         catch (error) {
             return res.status(500).json({ error: 'Failes to get users' });

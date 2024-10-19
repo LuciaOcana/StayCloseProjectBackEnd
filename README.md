@@ -4,9 +4,11 @@
 - create
 - update
 - delete
-- getUser
-- getUsers
+- getUser --> Ruta cambiada
+- getUsers --> Ruta cambiada
 - login --> nomes deixa loggear als admins
+
+Paginació d'usuaris funcionant
 
 ---------------Post functions---------------
 - create
