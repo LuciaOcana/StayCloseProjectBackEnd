@@ -44,6 +44,7 @@ exports.getEntries = {
     findUserByUsername: (username) => __awaiter(void 0, void 0, void 0, function* () {
         return yield user_1.userofDB.findOne({ username: username });
     }),
+    //Contamos el numero de Usuarios en la bbdd
     countTotalUsers: () => __awaiter(void 0, void 0, void 0, function* () {
         const totalUsers = yield user_1.userofDB.countDocuments(); // Esto cuenta todos los usuarios en la colección
         return totalUsers;
