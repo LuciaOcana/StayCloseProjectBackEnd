@@ -58,9 +58,15 @@ function getPosts(_req, res) {
 function createPost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            //console.log("Request body:", req.body);
             const { author, postType, content, image, postDate } = req.body;
-            const newPost = { author, postType, content, image, postDate };
+            // Se asegura de que todos los campos necesarios estén definidos
+            const newPost = {
+                author, // Usa el username
+                postType,
+                content,
+                image: image || '', // Proporciona una cadena vacía si no hay imagen
+                postDate: postDate ? new Date(postDate) : new Date() // Asegura que postDate sea una fecha válida
+            };
             console.log(newPost);
             const post = yield postServices.getEntries.create(newPost);
             return res.json({

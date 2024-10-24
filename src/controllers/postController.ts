@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 //import { userInterface } from "../models/user";
 import * as postServices from "../services/postServices";
 import { postInterface } from "../models/post";
+
 //import { post } from "@typegoose/typegoose";
 
 //import { userInterface } from "../models/user";
@@ -18,24 +19,29 @@ export async function getPosts(_req: Request, res: Response): Promise<Response> 
 }
 
 export async function createPost(req: Request, res: Response): Promise<Response> {
-   try {
-
-      //console.log("Request body:", req.body);
-      const { author, postType, content, image, postDate} = req.body as postInterface;
-      const newPost: Partial<postInterface> = { author, postType, content, image, postDate };
-      console.log(newPost);
-      const post = await postServices.getEntries.create(newPost);
-   
-      return res.json({
-          message: "Post created",
-          post
+    try {
+        const { author, postType, content, image, postDate } = req.body as postInterface;
+  
+        // Se asegura de que todos los campos necesarios estén definidos
+        const newPost: Partial<postInterface> = { 
+           author,  // Usa el username
+           postType, 
+           content, 
+           image: image || '', // Proporciona una cadena vacía si no hay imagen
+           postDate: postDate ? new Date(postDate) : new Date() // Asegura que postDate sea una fecha válida
+        };
+        console.log(newPost);
+  
+        const post = await postServices.getEntries.create(newPost);
+        return res.json({
+           message: "Post created",
+           post
         });
-  } catch (error) {
-      console.error("Error creating post:", error); 
-      return res.status(500).json({ error: 'Failed to create post' });
-  }
-}
-export async function updatePost(req: Request, res: Response): Promise<Response> {
+     } catch (error) {
+        console.error("Error creating post:", error); 
+        return res.status(500).json({ error: 'Failed to create post' });
+     }
+  }export async function updatePost(req: Request, res: Response): Promise<Response> {
    try{
        console.log('Get post');
        const id = req.params.id;
