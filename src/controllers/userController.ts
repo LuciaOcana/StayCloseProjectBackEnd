@@ -90,19 +90,23 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
 }
 export async function login(req: Request, res: Response): Promise<Response> {
     try{
+        console.log('logging user...')
         const {username, password} = req.body;
         const login = {username, password};
         const loggedUser = await userServices.getEntries.findUserByUsername(login.username);
+        console.log(loggedUser);
         if(!loggedUser){
             return res.status(404).json({ error: 'User not found'})
         } 
         if(login.password == loggedUser.password){
+            console.log('checking admin')
             if(loggedUser.admin != true){
                 return res.status(400).json({ error: 'You are not an Admin'})
             }
+            console.log('creem token');
             //Creem token
             const token: string = jwt.sign({username: username, admin: loggedUser.admin}, process.env.SECRET || 'token');
-            return res.header('auth-token', token).json('User logged in'); 
+            return res.json({ message: 'user logged in', token: token });
         }
         return res.status(400).json({ error: 'Incorrect password'})
     } catch(error) {
