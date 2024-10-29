@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 //import { userInterface } from "../models/user";
 import * as postServices from "../services/postServices";
 import { postInterface } from "../models/post";
+//import * as userServices from "../services/userServices"; // Asegúrate de importar los servicios de usuario
+
 
 //import { post } from "@typegoose/typegoose";
 
@@ -19,29 +21,37 @@ export async function getPosts(_req: Request, res: Response): Promise<Response> 
 }
 
 export async function createPost(req: Request, res: Response): Promise<Response> {
-    try {
-        const { author, postType, content, image, postDate } = req.body as postInterface;
-  
-        // Se asegura de que todos los campos necesarios estén definidos
-        const newPost: Partial<postInterface> = { 
-           author,  // Usa el username
-           postType, 
-           content, 
-           image: image || '', // Proporciona una cadena vacía si no hay imagen
-           postDate: postDate ? new Date(postDate) : new Date() // Asegura que postDate sea una fecha válida
-        };
-        console.log(newPost);
-  
-        const post = await postServices.getEntries.create(newPost);
-        return res.json({
-           message: "Post created",
-           post
-        });
-     } catch (error) {
-        console.error("Error creating post:", error); 
-        return res.status(500).json({ error: 'Failed to create post' });
-     }
-  }export async function updatePost(req: Request, res: Response): Promise<Response> {
+   try {
+      const { author, postType, content, image, postDate } = req.body as postInterface;
+
+      // Comprobamos si el usuario existe
+      const userExists = await postServices.getEntries.checkIfUserExists(author);
+      if (!userExists) {
+          return res.status(400).json({ error: "User does not exist" });
+      }
+
+      // Creamos un nuevo objeto de post
+      const newPost: postInterface = {
+          author,
+          postType,
+          content,
+          image: image || '',
+          postDate: postDate ? new Date(postDate) : new Date(),
+      };
+
+      // Usamos el servicio para crear el post
+      const post = await postServices.getEntries.create(newPost);
+
+      return res.json({
+          message: "Post created",
+          post
+      });
+  } catch (error) {
+      //console.error("Error creating post:", error.message); // Muestra el error en la consola
+      return res.status(500).json({ error: 'Failed to create post' }); // Devuelve un mensaje de error al frontend
+  }
+  }
+  export async function updatePost(req: Request, res: Response): Promise<Response> {
    try{
        console.log('Get post');
        const id = req.params.id;

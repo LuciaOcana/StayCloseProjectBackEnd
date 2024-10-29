@@ -110,3 +110,15 @@ export async function login(req: Request, res: Response): Promise<Response> {
         return res.status(500).json({ error: 'Failed to get user' });
     }
 }
+export async function checkUsername(req: Request, res: Response): Promise<Response> {
+    try {
+        const { username } = req.body;  // Tomamos el nombre de usuario del cuerpo de la solicitud
+        const exists = await userServices.getEntries.checkIfUserExists(username);  // Consultamos el servicio
+
+        // Retornamos si el usuario existe o no
+        return res.json({ exists });
+    } catch (error) {
+        console.error("Error al verificar el nombre de usuario:", error);
+        return res.status(500).json({ error: "Error interno del servidor" });
+    }
+}

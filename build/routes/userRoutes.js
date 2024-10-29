@@ -18,4 +18,6 @@ router.put("/update/:id", userController_1.updateUser);
 router.delete("/:id", userController_1.deleteUser);
 //Ruta per fer el login
 router.put("/login", userController_1.login);
+// Ruta para verificar si el usuario existe
+router.get('/users/check-exists/:username', userController_1.checkUsername);
 exports.default = router;

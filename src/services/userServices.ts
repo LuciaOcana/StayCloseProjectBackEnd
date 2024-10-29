@@ -39,5 +39,10 @@ export const getEntries = {
     countTotalUsers: async ()=>{
         const totalUsers = await userofDB.countDocuments(); // Esto cuenta todos los usuarios en la colección
       return totalUsers;
+    },
+    // Verificar si un usuario existe por nombre de usuario
+    checkIfUserExists: async (username: string): Promise<boolean> => {
+        const user = await userofDB.findOne({ username: username });
+        return !!user; // Retorna true si el usuario existe, false si no
     }
 }

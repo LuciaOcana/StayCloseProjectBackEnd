@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getEntries = void 0;
 const post_1 = require("../models/post");
+const user_1 = require("../models/user");
 exports.getEntries = {
     // Obtener todos los post
     getAll: (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (page = 1, limit = 10) {
@@ -42,5 +43,10 @@ exports.getEntries = {
     // Tots els posts d'un usuari
     findByAuthor: (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield post_1.postofDB.find({ author: id });
+    }),
+    // Comprobar si el usuario existe por nombre de usuario
+    checkIfUserExists: (username) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield user_1.userofDB.findOne({ username: username });
+        return !!user; // Devuelve true si el usuario existe
     })
 };

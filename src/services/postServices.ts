@@ -1,4 +1,5 @@
 import { postofDB } from '../models/post'
+import { userofDB } from '../models/user';
 
 export const getEntries = {
 
@@ -34,5 +35,10 @@ export const getEntries = {
     // Tots els posts d'un usuari
     findByAuthor: async(id:string)=>{
         return await postofDB.find({author: id});
+    },
+    // Comprobar si el usuario existe por nombre de usuario
+    checkIfUserExists: async (username: string): Promise<boolean> => {
+        const user = await userofDB.findOne({ username: username });
+        return !!user; // Devuelve true si el usuario existe
     }
 }

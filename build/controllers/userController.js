@@ -38,6 +38,7 @@ exports.getUser = getUser;
 exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
 exports.login = login;
+exports.checkUsername = checkUsername;
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
 function getUsers(req, res) {
@@ -151,6 +152,20 @@ function login(req, res) {
         }
         catch (error) {
             return res.status(500).json({ error: 'Failed to get user' });
+        }
+    });
+}
+function checkUsername(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { username } = req.body; // Tomamos el nombre de usuario del cuerpo de la solicitud
+            const exists = yield userServices.getEntries.checkIfUserExists(username); // Consultamos el servicio
+            // Retornamos si el usuario existe o no
+            return res.json({ exists });
+        }
+        catch (error) {
+            console.error("Error al verificar el nombre de usuario:", error);
+            return res.status(500).json({ error: "Error interno del servidor" });
         }
     });
 }

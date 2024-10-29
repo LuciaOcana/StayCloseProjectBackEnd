@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUsers, createUser, getUser, updateUser, deleteUser, login } from '../controllers/userController';
+import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername } from '../controllers/userController';
 
 const router = express.Router();
 
@@ -21,6 +21,8 @@ router.delete("/:id", deleteUser);
 //Ruta per fer el login
 router.put("/login", login);
 
+// Ruta para verificar si el usuario existe
+router.get('/users/check-exists/:username', checkUsername);
 
 export default router 
 

@@ -40,6 +40,7 @@ exports.getPost = getPost;
 exports.getAuthorPosts = getAuthorPosts;
 //import { userInterface } from "../models/user";
 const postServices = __importStar(require("../services/postServices"));
+//import * as userServices from "../services/userServices"; // Asegúrate de importar los servicios de usuario
 //import { post } from "@typegoose/typegoose";
 //import { userInterface } from "../models/user";
 function getPosts(_req, res) {
@@ -59,15 +60,20 @@ function createPost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { author, postType, content, image, postDate } = req.body;
-            // Se asegura de que todos los campos necesarios estén definidos
+            // Comprobamos si el usuario existe
+            const userExists = yield postServices.getEntries.checkIfUserExists(author);
+            if (!userExists) {
+                return res.status(400).json({ error: "User does not exist" });
+            }
+            // Creamos un nuevo objeto de post
             const newPost = {
-                author, // Usa el username
+                author,
                 postType,
                 content,
-                image: image || '', // Proporciona una cadena vacía si no hay imagen
-                postDate: postDate ? new Date(postDate) : new Date() // Asegura que postDate sea una fecha válida
+                image: image || '',
+                postDate: postDate ? new Date(postDate) : new Date(),
             };
-            console.log(newPost);
+            // Usamos el servicio para crear el post
             const post = yield postServices.getEntries.create(newPost);
             return res.json({
                 message: "Post created",
@@ -75,8 +81,8 @@ function createPost(req, res) {
             });
         }
         catch (error) {
-            console.error("Error creating post:", error);
-            return res.status(500).json({ error: 'Failed to create post' });
+            //console.error("Error creating post:", error.message); // Muestra el error en la consola
+            return res.status(500).json({ error: 'Failed to create post' }); // Devuelve un mensaje de error al frontend
         }
     });
 }

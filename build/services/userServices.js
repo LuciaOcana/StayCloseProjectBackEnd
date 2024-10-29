@@ -47,5 +47,10 @@ exports.getEntries = {
     countTotalUsers: () => __awaiter(void 0, void 0, void 0, function* () {
         const totalUsers = yield user_1.userofDB.countDocuments(); // Esto cuenta todos los usuarios en la colección
         return totalUsers;
+    }),
+    // Verificar si un usuario existe por nombre de usuario
+    checkIfUserExists: (username) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield user_1.userofDB.findOne({ username: username });
+        return !!user; // Retorna true si el usuario existe, false si no
     })
 };
