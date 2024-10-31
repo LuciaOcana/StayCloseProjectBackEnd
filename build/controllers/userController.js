@@ -31,6 +31,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsers = getUsers;
 exports.createUser = createUser;
@@ -41,6 +44,7 @@ exports.login = login;
 exports.checkUsername = checkUsername;
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function getUsers(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -134,19 +138,23 @@ function deleteUser(req, res) {
 function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            console.log('logging user...');
             const { username, password } = req.body;
             const login = { username, password };
             const loggedUser = yield userServices.getEntries.findUserByUsername(login.username);
+            console.log(loggedUser);
             if (!loggedUser) {
                 return res.status(404).json({ error: 'User not found' });
             }
             if (login.password == loggedUser.password) {
-                if (loggedUser.admin == true)
-                    return res.json({
-                        message: "User logged in",
-                        loggedUser
-                    });
-                return res.status(400).json({ error: 'You are not admin' });
+                console.log('checking admin');
+                if (loggedUser.admin != true) {
+                    return res.status(400).json({ error: 'You are not an Admin' });
+                }
+                console.log('creem token');
+                //Creem token
+                const token = jsonwebtoken_1.default.sign({ username: username, admin: loggedUser.admin }, process.env.SECRET || 'token');
+                return res.json({ message: 'user logged in', token: token });
             }
             return res.status(400).json({ error: 'Incorrect password' });
         }
