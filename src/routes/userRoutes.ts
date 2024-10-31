@@ -22,7 +22,7 @@ router.delete("/:id", deleteUser);
 router.put("/login", login);
 
 // Ruta para verificar si el usuario existe
-router.get('/users/check-exists/:username', checkUsername);
+router.get('/check-username/:username', checkUsername);
 
 export default router 
 

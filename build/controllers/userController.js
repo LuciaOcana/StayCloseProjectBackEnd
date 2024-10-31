@@ -158,7 +158,8 @@ function login(req, res) {
 function checkUsername(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const { username } = req.body; // Tomamos el nombre de usuario del cuerpo de la solicitud
+            const username = req.params.username; // Tomamos el nombre de usuario del cuerpo de la solicitud
+            console.log("chechUsername", username);
             const exists = yield userServices.getEntries.checkIfUserExists(username); // Consultamos el servicio
             // Retornamos si el usuario existe o no
             return res.json({ exists });

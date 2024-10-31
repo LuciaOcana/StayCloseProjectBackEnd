@@ -112,7 +112,8 @@ export async function login(req: Request, res: Response): Promise<Response> {
 }
 export async function checkUsername(req: Request, res: Response): Promise<Response> {
     try {
-        const { username } = req.body;  // Tomamos el nombre de usuario del cuerpo de la solicitud
+        const  username  = req.params.username;  // Tomamos el nombre de usuario del cuerpo de la solicitud
+        console.log("chechUsername", username);
         const exists = await userServices.getEntries.checkIfUserExists(username);  // Consultamos el servicio
 
         // Retornamos si el usuario existe o no

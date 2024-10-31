@@ -42,6 +42,7 @@ export const getEntries = {
     },
     // Verificar si un usuario existe por nombre de usuario
     checkIfUserExists: async (username: string): Promise<boolean> => {
+        console.log("checkIFUserExist", username);
         const user = await userofDB.findOne({ username: username });
         return !!user; // Retorna true si el usuario existe, false si no
     }

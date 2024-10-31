@@ -50,6 +50,7 @@ exports.getEntries = {
     }),
     // Verificar si un usuario existe por nombre de usuario
     checkIfUserExists: (username) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("checkIFUserExist", username);
         const user = yield user_1.userofDB.findOne({ username: username });
         return !!user; // Retorna true si el usuario existe, false si no
     })
