@@ -23,4 +23,8 @@ router.delete("/:id", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation
 router.post("/login", userController_1.login);
 // Ruta para verificar si el usuario existe
 router.get('/check-username/:username', userController_1.checkUsername);
+//Ruta para habilitar un usuario por ID
+router.patch("/enable/:id", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation, userController_1.enableUser);
+//Ryta para Deshabilitar un usuario por ID
+router.patch("/disable/:id", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation, userController_1.disableUser);
 exports.default = router;

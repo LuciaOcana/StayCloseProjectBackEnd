@@ -7,7 +7,8 @@ export interface userInterface{
     password: string,
     actualUbication: [],
     inHome: boolean,
-    admin: boolean
+    admin: boolean,
+    isEnabled: boolean
 }
 
 export type UsersInterfacePublicInfo = Pick<userInterface, 'username' | 'name' >
@@ -21,7 +22,8 @@ export const userSchema = new Schema<userInterface>({
     password: { type: String, required: true },
     actualUbication: [],
     inHome: { type: Boolean},
-    admin: {type: Boolean, default: false}
+    admin: {type: Boolean, default: false},
+    isEnabled: {type:Boolean, default: true} //por defecto usuarios habilitados
        
     //experiences: [{ type: Schema.Types.ObjectId, ref: 'experiencias' }] // Vector de experiencias con referencia a su modelo
 })

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername } from '../controllers/userController';
+import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, disableUser, enableUser } from '../controllers/userController';
 import { TokenValidation } from '../middlewares/verifyJWT';
 //import { verifyOwnership } from '../middlewares/verifyOwner';
 import { AdminValidation } from '../middlewares/verifyAdmin';
@@ -26,6 +26,13 @@ router.post("/login", login);
 
 // Ruta para verificar si el usuario existe
 router.get('/check-username/:username', checkUsername);
+
+//Ruta para habilitar un usuario por ID
+router.patch("/enable/:id", TokenValidation, AdminValidation, enableUser );
+
+//Ryta para Deshabilitar un usuario por ID
+router.patch("/disable/:id", TokenValidation, AdminValidation, disableUser);
+
 
 export default router 
 

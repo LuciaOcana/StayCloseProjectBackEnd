@@ -45,5 +45,16 @@ export const getEntries = {
         console.log("checkIFUserExist", username);
         const user = await userofDB.findOne({ username: username });
         return !!user; // Retorna true si el usuario existe, false si no
+    },
+
+    //Habilitar un usuario
+
+    enable: async (id: string) => {
+        return await userofDB.findByIdAndUpdate (id,{isActive:true}, {new: true});
+    },
+
+    //Deshabilitar un usuario
+    disable: async (id: string) => {
+        return await userofDB.findByIdAndUpdate(id, {isActive:false}, {new: true});
     }
-}
+};

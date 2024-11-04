@@ -53,5 +53,13 @@ exports.getEntries = {
         console.log("checkIFUserExist", username);
         const user = yield user_1.userofDB.findOne({ username: username });
         return !!user; // Retorna true si el usuario existe, false si no
+    }),
+    //Habilitar un usuario
+    enable: (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield user_1.userofDB.findByIdAndUpdate(id, { isActive: true }, { new: true });
+    }),
+    //Deshabilitar un usuario
+    disable: (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield user_1.userofDB.findByIdAndUpdate(id, { isActive: false }, { new: true });
     })
 };
