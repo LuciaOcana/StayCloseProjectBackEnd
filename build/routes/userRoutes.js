@@ -23,4 +23,6 @@ router.delete("/:id", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation
 router.post("/login", userController_1.login);
 // Ruta para verificar si el usuario existe
 router.get('/check-username/:username', userController_1.checkUsername);
+//Ruta per canviar rol d'usuari 
+router.put("/changeRol/:id", userController_1.changeRol);
 exports.default = router;
