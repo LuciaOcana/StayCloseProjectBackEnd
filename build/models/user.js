@@ -10,7 +10,8 @@ exports.userSchema = new mongoose_1.Schema({
     actualUbication: [],
     inHome: { type: Boolean },
     admin: { type: Boolean, default: false },
-    isEnabled: { type: Boolean, default: true } //por defecto usuarios habilitados
+    //isEnabled: {type:Boolean, default: true} //por defecto usuarios habilitados
+    disabled: { type: Boolean, default: false },
     //experiences: [{ type: Schema.Types.ObjectId, ref: 'experiencias' }] // Vector de experiencias con referencia a su modelo
 });
 exports.userofDB = (0, mongoose_1.model)('user', exports.userSchema);

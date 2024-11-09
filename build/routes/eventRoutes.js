@@ -63,4 +63,5 @@ eventRoutes.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, funct
     const data = yield eventServices.getEntries.delete(req.params.id);
     return res.json(data);
 }));
+//ruta para habilitar usuarios 
 exports.default = eventRoutes;

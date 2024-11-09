@@ -47,6 +47,8 @@ exports.getEntries = {
     countTotalUsers: () => __awaiter(void 0, void 0, void 0, function* () {
         const totalUsers = yield user_1.userofDB.countDocuments(); // Esto cuenta todos los usuarios en la colección
         return totalUsers;
+        //para contar solo los usuarios habilitados 
+        //return await userofDB.countDocuments({disabled:false});
     }),
     // Verificar si un usuario existe por nombre de usuario
     checkIfUserExists: (username) => __awaiter(void 0, void 0, void 0, function* () {
@@ -56,10 +58,16 @@ exports.getEntries = {
     }),
     //Habilitar un usuario
     enable: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield user_1.userofDB.findByIdAndUpdate(id, { isActive: true }, { new: true });
+        const user = yield user_1.userofDB.findByIdAndUpdate(id, { disabled: false }, { new: true });
+        if (!user)
+            throw new Error('Usuario no encontrado');
+        return user;
     }),
     //Deshabilitar un usuario
     disable: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield user_1.userofDB.findByIdAndUpdate(id, { isActive: false }, { new: true });
+        const user = yield user_1.userofDB.findByIdAndUpdate(id, { disabled: true }, { new: true });
+        if (!user)
+            throw new Error('Usuario no encontrado');
+        return user;
     })
 };

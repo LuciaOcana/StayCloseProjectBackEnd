@@ -136,10 +136,12 @@ export async function enableUser (req:Request, res: Response): Promise<Response>
     try {
 
         const id = req.params.id; // Obtener el ID del 
-        const user = await userServices.getEntries.updateUserById (id, { isActive: true });
+        //const user = await userServices.getEntries.updateUserById (id, { disabled: false });
+        const user = await userServices.getEntries.enable(id);
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
         return res.status(200).json({ message: 'Usuario habilitado', user });
-    } catch (error) {
+    } catch (error:any) {
+        console.error("Error al habilitar usuario:", error.message);
         return res.status(500).json({ error: "Error al habilitar el usuario: "});
     }
     
@@ -149,10 +151,12 @@ export async function enableUser (req:Request, res: Response): Promise<Response>
 export async function disableUser (req: Request, res: Response): Promise<Response> {
     try {
         const id = req.params.id; // Obtener el ID del usuario 
-        const user = await userServices.getEntries.updateUserById (id, { isActive: false });
+        //const user = await userServices.getEntries.updateUserById (id, { disabled: true });
+        const user = await userServices.getEntries.disable(id);
         if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
         return res.status(200).json({ message: 'Usuario deshabilitado', user });
-    } catch (error) {
+    } catch (error: any) {
+        console.error("Error al deshabilitar usuario:", error.message);
         return res.status(500).json({ error: "Error al deshabilitar el usuario" });
 
     }
