@@ -39,11 +39,31 @@ export const getEntries = {
     countTotalUsers: async ()=>{
         const totalUsers = await userofDB.countDocuments(); // Esto cuenta todos los usuarios en la colección
       return totalUsers;
+
+      //para contar solo los usuarios habilitados 
+      //return await userofDB.countDocuments({disabled:false});
+
+
     },
     // Verificar si un usuario existe por nombre de usuario
     checkIfUserExists: async (username: string): Promise<boolean> => {
         console.log("checkIFUserExist", username);
         const user = await userofDB.findOne({ username: username });
         return !!user; // Retorna true si el usuario existe, false si no
+    },
+
+    //Habilitar un usuario
+
+    enable: async (id: string) => {
+        const user= await userofDB.findByIdAndUpdate (id,{disabled:false}, {new: true});
+        if (!user) throw new Error('Usuario no encontrado');
+        return user;
+    },
+
+    //Deshabilitar un usuario
+    disable: async (id: string) => {
+        const user= await userofDB.findByIdAndUpdate(id, {disabled:true}, {new: true});
+        if (!user) throw new Error('Usuario no encontrado');
+        return user;
     }
-}
+};

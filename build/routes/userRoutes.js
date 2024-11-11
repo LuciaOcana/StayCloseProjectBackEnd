@@ -25,4 +25,8 @@ router.post("/login", userController_1.login);
 router.get('/check-username/:username', userController_1.checkUsername);
 //Ruta per canviar rol d'usuari 
 router.put("/changeRol/:id", userController_1.changeRol);
+//Ruta para habilitar un usuario por ID
+router.patch("/enable/:id", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation, userController_1.enableUser);
+//Ruta para Deshabilitar un usuario por ID
+router.patch("/disable/:id", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation, userController_1.disableUser);
 exports.default = router;
