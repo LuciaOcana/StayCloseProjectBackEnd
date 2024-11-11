@@ -43,6 +43,9 @@ exports.deleteUser = deleteUser;
 exports.login = login;
 exports.checkUsername = checkUsername;
 exports.changeRol = changeRol;
+exports.enableUser = enableUser;
+exports.disableUser = disableUser;
+
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -64,6 +67,7 @@ function getUsers(req, res) {
             return res.json({ users, totalUsers });
         }
         catch (error) {
+            console.error(error); //log de errores quitar
             return res.status(500).json({ error: 'Failes to get users' });
         }
     });
@@ -179,6 +183,7 @@ function checkUsername(req, res) {
         }
     });
 }
+
 function changeRol(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -201,6 +206,38 @@ function changeRol(req, res) {
         }
         catch (_a) {
             return res.status(500).json({ message: `Error al cambiar el rol de admin` });
+
+//funciones para habilitar usuarios 
+function enableUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const id = req.params.id; // Obtener el ID del 
+            //const user = await userServices.getEntries.updateUserById (id, { disabled: false });
+            const user = yield userServices.getEntries.enable(id);
+            if (!user)
+                return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(200).json({ message: 'Usuario habilitado', user });
+        }
+        catch (error) {
+            console.error("Error al habilitar usuario:", error.message);
+            return res.status(500).json({ error: "Error al habilitar el usuario: " });
+        }
+    });
+}
+//Habilitar usuario funcion 
+function disableUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const id = req.params.id; // Obtener el ID del usuario 
+            //const user = await userServices.getEntries.updateUserById (id, { disabled: true });
+            const user = yield userServices.getEntries.disable(id);
+            if (!user)
+                return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(200).json({ message: 'Usuario deshabilitado', user });
+        }
+        catch (error) {
+            console.error("Error al deshabilitar usuario:", error.message);
+            return res.status(500).json({ error: "Error al deshabilitar el usuario" });
         }
     });
 }
