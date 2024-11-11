@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername } from '../controllers/userController';
+import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol } from '../controllers/userController';
 import { TokenValidation } from '../middlewares/verifyJWT';
 //import { verifyOwnership } from '../middlewares/verifyOwner';
 import { AdminValidation } from '../middlewares/verifyAdmin';
@@ -26,6 +26,9 @@ router.post("/login", login);
 
 // Ruta para verificar si el usuario existe
 router.get('/check-username/:username', checkUsername);
+
+//Ruta per canviar rol d'usuari 
+router.put("/changeRol/:id", changeRol);
 
 export default router 
 

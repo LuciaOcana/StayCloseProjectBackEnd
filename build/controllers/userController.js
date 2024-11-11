@@ -42,6 +42,7 @@ exports.updateUser = updateUser;
 exports.deleteUser = deleteUser;
 exports.login = login;
 exports.checkUsername = checkUsername;
+exports.changeRol = changeRol;
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -175,6 +176,31 @@ function checkUsername(req, res) {
         catch (error) {
             console.error("Error al verificar el nombre de usuario:", error);
             return res.status(500).json({ error: "Error interno del servidor" });
+        }
+    });
+}
+function changeRol(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const id = req.params.id;
+            const user = yield userServices.getEntries.findById(id);
+            if (!user)
+                return res.status(404).json({ message: `El usuari no s'ha trobat` });
+            console.log(user);
+            if (user.admin == true) {
+                console.log("hola");
+                return res.status(400).json({ message: `El usuari ja es admin` });
+            }
+            // Cambiar el rol de admin
+            user.admin = true;
+            console.log(user.admin);
+            // Guardar los cambios
+            console.log(id);
+            const user2 = yield userServices.getEntries.updateUserById(id, user);
+            return res.status(200).json({ message: `El rol del usuario: ${user2} ha sido cambiado a admin.` });
+        }
+        catch (_a) {
+            return res.status(500).json({ message: `Error al cambiar el rol de admin` });
         }
     });
 }
