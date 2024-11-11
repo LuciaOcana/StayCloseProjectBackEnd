@@ -130,6 +130,33 @@ export async function checkUsername(req: Request, res: Response): Promise<Respon
     }
 }
 
+export async function changeRol(req: Request, res: Response): Promise<Response> {
+    try {
+        
+        const id = req.params.id;
+        const user = await userServices.getEntries.findById(id);
+        if (!user) return res.status(404).json({ message: `El usuari no s'ha trobat` });
+
+
+        console.log(user);
+        if (user.admin == true) {
+            console.log("hola");
+            return res.status(400).json({ message: `El usuari ja es admin` });
+        }
+
+        // Cambiar el rol de admin
+        user.admin = true;
+        console.log(user.admin);
+        // Guardar los cambios
+        console.log(id);
+        const user2 = await userServices.getEntries.updateUserById(id, user);
+
+        return res.status(200).json({ message: `El rol del usuario: ${user2} ha sido cambiado a admin.` });
+    } catch {
+        return res.status(500).json({ message: `Error al cambiar el rol de admin` });
+    }
+}
+
 //funciones para habilitar usuarios 
 
 export async function enableUser (req:Request, res: Response): Promise<Response> {
