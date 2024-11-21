@@ -1,0 +1,32 @@
+# Dist directory (for compiled output) and  build artifacts
+dist/
+out/
+build/
+
+# JS Code
+src/*.js
+src/*.js.map
+
+# Dependency directory
+node_modules/
+
+# dotenv environment variables file
+.env
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# TypeScript cache
+*.tscache
+
+# Temp files
+*.tmp
+*.temp
+
+# Editor settings
+.vscode/
+*.code-workspace
+

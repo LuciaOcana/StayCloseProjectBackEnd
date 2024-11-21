@@ -9,7 +9,7 @@ interface IPayload {
     exp: number;
 }
 
-export const TokenValidation =(req: Request, res: Response, next: NextFunction) => {
+export const TokenValidation = async (req: Request, res: Response, next: NextFunction) => {
     console.log('Verifying token');
     //Recollim token de la header
     const token = req.header('auth-token');

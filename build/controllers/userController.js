@@ -45,7 +45,6 @@ exports.checkUsername = checkUsername;
 exports.changeRol = changeRol;
 exports.enableUser = enableUser;
 exports.disableUser = disableUser;
-
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -183,7 +182,6 @@ function checkUsername(req, res) {
         }
     });
 }
-
 function changeRol(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -206,7 +204,9 @@ function changeRol(req, res) {
         }
         catch (_a) {
             return res.status(500).json({ message: `Error al cambiar el rol de admin` });
-
+        }
+    });
+}
 //funciones para habilitar usuarios 
 function enableUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {

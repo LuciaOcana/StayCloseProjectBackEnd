@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Servei per a l'aplicació backend
+  backend:
+    image: laurafernandezgarcia8/backend:0.1.2
+    env_file:
+      - .env
+    ports:
+      - "3000:3000" # Exposa el port 3000 del contenidor al port 3000 de l'host
+    depends_on:
+      - mongodb # S'assegura que MongoDB s'inicia abans que el backend
+
+  # Servei per a MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017" # Exposa el port 27017 de MongoDB
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root # Usuari administrador
+      - MONGO_INITDB_ROOT_PASSWORD=example # Contrasenya de l'usuari administrador
+    volumes:
+      - mongodb_data:/data/db # Guarda les dades en un volum persistent
+
+# Volums per mantenir les dades de MongoDB
+volumes:
+  mongodb_data:

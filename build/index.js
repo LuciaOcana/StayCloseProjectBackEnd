@@ -9,6 +9,7 @@ const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 //import eventRouter from './routes/eventRoutes'
 const postRoutes_1 = __importDefault(require("./routes/postRoutes"));
 const databaseConection_1 = require("./database/databaseConection");
+//import './types/express'
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 (0, databaseConection_1.run)();
