@@ -45,6 +45,7 @@ exports.checkUsername = checkUsername;
 exports.changeRol = changeRol;
 exports.enableUser = enableUser;
 exports.disableUser = disableUser;
+exports.registerUser = registerUser;
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -207,7 +208,6 @@ function changeRol(req, res) {
         }
     });
 }
-//funciones para habilitar usuarios 
 function enableUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -224,7 +224,6 @@ function enableUser(req, res) {
         }
     });
 }
-//Habilitar usuario funcion 
 function disableUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -238,6 +237,25 @@ function disableUser(req, res) {
         catch (error) {
             console.error("Error al deshabilitar usuario:", error.message);
             return res.status(500).json({ error: "Error al deshabilitar el usuario" });
+        }
+    });
+}
+function registerUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { username, name, email, password } = req.body;
+            // Verificar si el usuario ya existe
+            const existingUser = yield userServices.getEntries.findUserByUsername(username);
+            if (existingUser) {
+                return res.status(400).json({ error: 'El nombre de usuario ya está en uso' });
+            }
+            // Crear un nuevo usuario
+            const newUser = { username, name, email, password, admin: false }; // Asumimos que el nuevo usuario no es admin
+            const user = yield userServices.getEntries.create(newUser);
+        }
+        catch (error) {
+            console.error(error); // Log de errores
+            return res.status(500).json({ error: 'Error al registrar el usuario' });
         }
     });
 }

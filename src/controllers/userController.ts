@@ -157,9 +157,7 @@ export async function changeRol(req: Request, res: Response): Promise<Response> 
     }
 }
 
-//funciones para habilitar usuarios 
-
-export async function enableUser (req:Request, res: Response): Promise<Response> {
+export async function enableUser (req:Request, res: Response): Promise<Response> { //funciones para habilitar usuarios 
     try {
 
         const id = req.params.id; // Obtener el ID del 
@@ -174,8 +172,8 @@ export async function enableUser (req:Request, res: Response): Promise<Response>
     
 }
 
-//Habilitar usuario funcion 
-export async function disableUser (req: Request, res: Response): Promise<Response> {
+
+export async function disableUser (req: Request, res: Response): Promise<Response> { //Habilitar usuario funcion 
     try {
         const id = req.params.id; // Obtener el ID del usuario 
         //const user = await userServices.getEntries.updateUserById (id, { disabled: true });
@@ -188,4 +186,24 @@ export async function disableUser (req: Request, res: Response): Promise<Respons
 
     }
 
+}
+
+export async function registerUser (req: Request, res: Response): Promise<Response> {
+    try {
+        const { username, name, email, password } = req.body as userInterface;
+
+        // Verificar si el usuario ya existe
+        const existingUser  = await userServices.getEntries.findUserByUsername(username);
+        if (existingUser ) {
+            return res.status(400).json({ error: 'El nombre de usuario ya está en uso' });
+        }
+
+        // Crear un nuevo usuario
+        const newUser: Partial<userInterface> = { username, name, email, password, admin: false }; // Asumimos que el nuevo usuario no es admin
+        const user = await userServices.getEntries.create(newUser );
+
+    } catch (error) {
+        console.error(error); // Log de errores
+        return res.status(500).json({ error: 'Error al registrar el usuario' });
+    }
 }

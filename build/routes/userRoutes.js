@@ -29,4 +29,6 @@ router.put("/changeRol/:id", userController_1.changeRol);
 router.patch("/enable/:id", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation, userController_1.enableUser);
 //Ruta para Deshabilitar un usuario por ID
 router.patch("/disable/:id", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation, userController_1.disableUser);
+//ruta para registrar el usuario
+router.post("/register", userController_1.registerUser); //Pendiente de agregar las validaciones 
 exports.default = router;

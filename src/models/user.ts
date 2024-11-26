@@ -8,7 +8,6 @@ export interface userInterface{
     actualUbication: [],
     inHome: boolean,
     admin: boolean,
-    //isEnabled: boolean
     disabled:boolean
 }
 

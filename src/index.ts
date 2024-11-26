@@ -8,7 +8,10 @@ import { run } from './database/databaseConection'
 //import './types/express'
 
 const app = express()
+
 app.use(express.json())
+
+
 run();
 
 app.use(cors());
