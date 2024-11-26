@@ -189,3 +189,8 @@ export async function disableUser (req: Request, res: Response): Promise<Respons
     }
 
 }
+
+//Funcion sencilla para comprovar el fucnionament de la API
+export async function PingPong(_req: Request, res: Response): Promise<Response> {
+    return res.status(200).json({ message: "pong" });
+}

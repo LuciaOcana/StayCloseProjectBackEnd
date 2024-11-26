@@ -45,6 +45,7 @@ exports.checkUsername = checkUsername;
 exports.changeRol = changeRol;
 exports.enableUser = enableUser;
 exports.disableUser = disableUser;
+exports.PingPong = PingPong;
 //import { userInterface } from "../models/user";
 const userServices = __importStar(require("../services/userServices"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -239,5 +240,11 @@ function disableUser(req, res) {
             console.error("Error al deshabilitar usuario:", error.message);
             return res.status(500).json({ error: "Error al deshabilitar el usuario" });
         }
+    });
+}
+//Funcion sencilla para comprovar el fucnionament de la API
+function PingPong(_req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return res.status(200).json({ message: "pong" });
     });
 }

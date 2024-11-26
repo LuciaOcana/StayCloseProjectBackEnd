@@ -1,11 +1,14 @@
 import express from 'express';
 
-import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol, disableUser, enableUser } from '../controllers/userController';
+import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol, disableUser, enableUser, PingPong } from '../controllers/userController';
 import { TokenValidation } from '../middlewares/verifyJWT';
 //import { verifyOwnership } from '../middlewares/verifyOwner';
 import { AdminValidation } from '../middlewares/verifyAdmin';
 
 const router = express.Router();
+
+//Ruta bàscia per comporvar que funciona
+router.get("/ping", PingPong);
 
 // Ruta para obtener todos los usuarios
 router.get("/getUsers/:page/:limit", TokenValidation, AdminValidation, getUsers);

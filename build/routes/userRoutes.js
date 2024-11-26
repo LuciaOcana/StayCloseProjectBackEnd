@@ -9,6 +9,8 @@ const verifyJWT_1 = require("../middlewares/verifyJWT");
 //import { verifyOwnership } from '../middlewares/verifyOwner';
 const verifyAdmin_1 = require("../middlewares/verifyAdmin");
 const router = express_1.default.Router();
+//Ruta bàscia per comporvar que funciona
+router.get("/ping", userController_1.PingPong);
 // Ruta para obtener todos los usuarios
 router.get("/getUsers/:page/:limit", verifyJWT_1.TokenValidation, verifyAdmin_1.AdminValidation, userController_1.getUsers);
 // Ruta per crear usuari
