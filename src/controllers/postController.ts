@@ -11,6 +11,7 @@ import { postInterface } from "../models/post";
 
 export async function getPosts(_req: Request, res: Response): Promise<Response> {
    try {
+    
     console.log("Get posts");
     const posts = await postServices.getEntries.getAll();
     console.log("post", posts);
