@@ -188,6 +188,7 @@ export async function disableUser (req: Request, res: Response): Promise<Respons
 
 }
 
+/*
 export async function registerUser (req: Request, res: Response): Promise<Response> {
     try {
         const { username, name, email, password } = req.body as userInterface;
@@ -206,4 +207,6 @@ export async function registerUser (req: Request, res: Response): Promise<Respon
         console.error(error); // Log de errores
         return res.status(500).json({ error: 'Error al registrar el usuario' });
     }
+        
 }
+    */
