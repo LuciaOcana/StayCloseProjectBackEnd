@@ -14,7 +14,7 @@ router.get("/ping", PingPong);
 router.get("/getUsers/:page/:limit", TokenValidation, AdminValidation, getUsers);
 
 // Ruta per crear usuari
-router.post("/", TokenValidation, AdminValidation,createUser);
+router.post("/", createUser);
 
 //Ruta per obtenir usuari per id
 router.get("/getUser/:id", TokenValidation, AdminValidation, getUser);
