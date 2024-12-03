@@ -56,6 +56,23 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
         return res.status(500).json({ error: 'Failed to get user' });
     }
 }
+/*export async function getUserUsername(req: Request, res: Response): Promise<Response> {
+    try {
+        console.log('Get user by username');
+        const username = req.params.username; // Obtener el parámetro 'username' de la URL
+
+        // Aquí se busca al usuario por el username
+        const user = await userServices.getEntries.findByUsername(username);
+
+        if (!user) {
+            return res.status(404).json({ error: `User with username ${username} not found` });
+        }
+        return res.json(user);
+    } catch (error) {
+        console.error("Error getting user by username:", error);
+        return res.status(500).json({ error: 'Failed to get user' });
+    }
+}*/
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
     try{
@@ -107,8 +124,9 @@ export async function login(req: Request, res: Response): Promise<Response> {
                 return res.status(400).json({ error: 'You are not an Admin'})
             }
             console.log('creem token');
+            const id = userServices.getEntries.findUserByUsername(username);
             //Creem token
-            const token: string = jwt.sign({username: username, admin: loggedUser.admin}, process.env.SECRET || 'token');
+            const token: string = jwt.sign({id: id, username: username, admin: loggedUser.admin}, process.env.SECRET || 'token');
             return res.json({ message: 'user logged in', token: token });
         }
         return res.status(400).json({ error: 'Incorrect password'})

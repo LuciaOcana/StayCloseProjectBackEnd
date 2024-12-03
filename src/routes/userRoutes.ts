@@ -18,6 +18,8 @@ router.post("/", createUser);
 
 //Ruta per obtenir usuari per id
 router.get("/getUser/:id", TokenValidation, AdminValidation, getUser);
+//Ruta per obtenir usuari per username
+//router.get("/getUserUsername/:username", getUserUsername);
 
 //Ruta per actialitzar usuari per id
 router.put("/update/:id", TokenValidation, AdminValidation, updateUser);

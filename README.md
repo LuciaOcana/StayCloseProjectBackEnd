@@ -19,7 +19,8 @@ Paginació d'usuaris funcionant
 - getPosts
 
 ---------------To execute---------------
+- npm install
 - tsc  
-- node build/index.js  
+- node build/index.js or npm run start
 
 

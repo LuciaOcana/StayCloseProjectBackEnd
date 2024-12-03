@@ -19,6 +19,10 @@ export const getEntries = {
     findById: async(id:string)=>{
         return await userofDB.findById(id);
     },
+    // Buscar usuario por ID
+    findByUsername: async(username:string)=>{
+        return await userofDB.findOne({ username: username  });
+    },
     // Crear un nuevo usuario
     create: async(entry:object)=>{
         console.log(entry);

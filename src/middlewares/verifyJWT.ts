@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { handleHttp } from '../utils/error.handle'
 
 interface IPayload {
+    id: string,
     username: string;
     isAdmin: boolean; // Añade el campo isAdmin al payload
     iat: number;
