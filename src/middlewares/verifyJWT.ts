@@ -19,6 +19,7 @@ export const TokenValidation = async (req: Request, res: Response, next: NextFun
     try{
         const payload = jwt.verify(token, process.env.SECRET || 'token') as IPayload;
         req.user = payload;
+        console.log(payload);
         next();
     }catch (error) {
         handleHttp(res, 'Your token is not valid', error);

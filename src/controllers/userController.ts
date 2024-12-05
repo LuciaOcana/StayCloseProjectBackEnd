@@ -124,9 +124,12 @@ export async function login(req: Request, res: Response): Promise<Response> {
                 return res.status(400).json({ error: 'You are not an Admin'})
             }
             console.log('creem token');
-            const id = userServices.getEntries.findUserByUsername(username);
+            const user = await userServices.getEntries.findUserByUsername(username);
+            const id = user?.id;
+            const email = user?.email;
+            //console.log("este es el id del usuario loggeado:", id);
             //Creem token
-            const token: string = jwt.sign({id: id, username: username, admin: loggedUser.admin}, process.env.SECRET || 'token');
+            const token: string = jwt.sign({id: id, username: username, email: email, admin: loggedUser.admin}, process.env.SECRET || 'token');
             return res.json({ message: 'user logged in', token: token });
         }
         return res.status(400).json({ error: 'Incorrect password'})
