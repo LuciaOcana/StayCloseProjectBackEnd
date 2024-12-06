@@ -34,11 +34,4 @@ eventRoutes.delete('/:id', async(req, res) => {
     return res.json(data);
 })
 
-
-
-//ruta para habilitar usuarios 
-
-
-
-
 export default eventRoutes 
