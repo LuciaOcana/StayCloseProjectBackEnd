@@ -1,7 +1,7 @@
 import express,{RequestHandler} from 'express'
 import cors from 'cors'
 import userRouter from './routes/userRoutes'
-//import eventRouter from './routes/eventRoutes'
+import eventRouter from './routes/eventRoutes'
 import postRouter from './routes/postRoutes'
 
 import { run } from './database/databaseConection'
@@ -23,7 +23,7 @@ app.get('/ping', (_req , res) => {
 
 app.use('/api/user', userRouter)
 app.use('/api/posts', postRouter)
-//app.use('/api/events', eventRouter)
+app.use('/api/events', eventRouter)
 
 app.listen(PORT, () => {
     console.log('el servidor esta escuchando en el puerto '+ PORT)
