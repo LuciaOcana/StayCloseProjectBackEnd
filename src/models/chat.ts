@@ -1,17 +1,28 @@
-import { model,  Schema } from "mongoose";
+import { model,  Schema, Document } from "mongoose";
+import {userInterface} from './user';
+import { IMessage } from './message'; 
 
 
-export interface chatInterface{
+
+//interface
+export interface chatInterface extends Document{
     //chatID: string, *¿PONEMOS UNA ID NOSOTRAS O ESCOGEMOS LA QUE ASIGNA MONGO POR DEFECTO?* 
-    chatType: boolean,
-    participants: []
+    name:string; //nombre del chat
+    users:userInterface[];//Relacion con los usuarios
+    chatType: boolean; //tipo privado/grupal
+    participants: string []; //array de la lista de participantes
+    messages:IMessage[];//Mensajes del chat
+    
 }
 
-export type newChatInfo = Omit<chatInterface,'id'>
-
 export const chatSchema = new Schema<chatInterface>({
-    chatType: { type: Boolean, required: true },
-    participants: [{ type: String }]
-})
+    name:{ type:String,required:true},//nombre del chat "Mani 25N"
+    chatType: { type: Boolean, required: true }, //privvado individual
+    participants: [{ type: String }], //Username de los participantes 
+    messages: [{ type: Schema.Types.ObjectId, ref: "ChatMessage" }],
+    users: [{ type: Schema.Types.ObjectId, ref: "User ", required: true }],
+},
+{ timestamps:true}
+);
 
-export const chatofDB = model<chatInterface>('chat',chatSchema)
+export const Chat = model<chatInterface>('Chat',chatSchema)
