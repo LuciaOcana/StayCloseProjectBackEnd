@@ -6,6 +6,9 @@ import postRouter from './routes/postRoutes'
 import { run } from './database/databaseConection'
 //import './types/express'
 import chatRoutes from "./routes/chatRoutes"
+import http from 'http'
+import { Server } from 'socket.io'
+
 
 const app = express()
 app.use(express.json())
@@ -20,11 +23,30 @@ app.use('/api/chat', chatRoutes);
 
 const PORT = 3000;
 
-app.get('/ping', (_req , res) => {
-    console.log('ping recivido correctamente')
-    res.send('pinged')
-})
-
+//inicia el servidor 
 app.listen(PORT, () => {
     console.log('el servidor esta escuchando en el puerto '+ PORT)
 })
+
+
+// Crear servidor HTTP 
+const server = http.createServer(app); 
+const io = new Server(server, 
+    { cors: { origin: "*",
+
+     } 
+    }); 
+    io.on('connection', (socket) => { 
+         console.log('Nuevo cliente conectado'); 
+
+    socket.on('message', (data) => { 
+     io.emit('newMessage', data); }); 
+    socket.on('disconnect', () => { 
+        console.log('Cliente desconectado'); 
+    }); 
+    });
+
+app.get('/ping', (_req , res) => {
+    console.log('ping recivido correctamente')
+    res.send('pinged')
+});

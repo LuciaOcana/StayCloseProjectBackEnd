@@ -1,34 +1,19 @@
-import { Schema, model, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
+// Definición de la interfaz IMessage
 export interface IMessage extends Document {
-    content: string;
-    sender: string;
-    timestamp: Date;
-  }
-
-  const messageSchema = new Schema<IMessage>({
-    content: { type: String, required: true },
-    sender: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now },
-  });
-  
-  export const ChatMessage = model<IMessage>('Message', messageSchema);
-
-/*
-export interface messageInterface{
-    //messageID: string, *¿PONEMOS UNA ID NOSOTRAS O ESCOGEMOS LA QUE ASIGNA MONGO POR DEFECTO?* 
-    author: Schema.Types.ObjectId,
-    message: string,
-    shippingDate: Date
+  content: string;
+  sender: string;
+  timestamp: Date;
 }
 
-export type newMessageInfo = Omit<messageInterface,'id'>
+// Definición del esquema del mensaje
+const messageSchema: Schema<IMessage> = new Schema({
+  content: { type: String, required: true },
+  sender: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+});
 
-export const messageSchema = new Schema<messageInterface>({
-    author: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-    message: { type: String, required: true },
-    shippingDate: { type: Date, required: true }
-})
-
-export const ChatMessage = model<messageInterface>('message',messageSchema)
-*/
+// Exportar tanto el modelo como la interfaz
+export const Message: Model<IMessage> = mongoose.model<IMessage>('Message', messageSchema);
+export default Message;
