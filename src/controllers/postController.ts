@@ -13,7 +13,9 @@ export async function getPosts(_req: Request, res: Response): Promise<Response> 
    try {
     
     console.log("Get posts");
+    console.log("Estic recollint posts");
     const posts = await postServices.getEntries.getAll();
+    console.log("Ja he recollit posts")
     console.log("post", posts);
     return res.json(posts);
    } catch (error) {

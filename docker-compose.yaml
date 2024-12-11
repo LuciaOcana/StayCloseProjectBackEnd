@@ -4,7 +4,7 @@ services:
   # Servei per a l'aplicació backend
   backend:
     container_name: backend
-    image: laurafernandezgarcia8/backend:0.1.4
+    image: laurafernandezgarcia8/backend:0.2.2
     env_file:
       - .env
     ports:
@@ -29,6 +29,12 @@ services:
     image: laurafernandezgarcia8/backoffice:0.1.3
     ports:
       - "4200:80" # Exposa el port 8080 del contenidor al port 80 de l'host
+  
+  #Servei per a Frontend
+  frontend: 
+    image: laurafernandezgarcia8/frontend:0.1.4
+    ports:
+      - "8080:80" # Exposa el port 8080 del contenidor al port 80 de l'host
 
 # Volums per mantenir les dades de MongoDB
 volumes:

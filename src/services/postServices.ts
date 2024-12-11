@@ -6,12 +6,14 @@ export const getEntries = {
     // Obtener todos los post
     getAll: async(page = 1, limit = 10)=>{
         const skip = (page - 1) * limit;
-    
+        console.log("Estic al service de post");
+        console.log(skip, limit);
         // Realizar la consulta con paginación
         const posts = await postofDB.find()
-                                    .skip(skip)
-                                    .limit(limit);
+                                    .skip(0)
+                                    .limit(10);
     
+        console.log("He fet el service de post");
         // Retornar los usuarios encontrados
         return posts;
     },
@@ -21,7 +23,9 @@ export const getEntries = {
     },
     // Crear un nuevo post
     create: async(entry:object)=>{
+        console.log("Estic al service del post CREANT");
         return await postofDB.create(entry);
+        console.log("Acabo de crear");
     },
     // Actualizar un post por ID
     update: async(id:string,body:object)=>{
