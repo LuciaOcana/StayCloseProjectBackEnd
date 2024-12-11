@@ -8,6 +8,7 @@ export interface ubiInterface{
     latitud: number,
     longitud: number
    },
+   address: string,
    comentari: string
 }
 
@@ -21,6 +22,7 @@ export const ubiSchema = new Schema<ubiInterface>({
         latitud: { type: Number, required: true },   
         longitud: { type: Number, required: true }   
     },
+    address:{ type: String, required: true }, 
     comentari: { type: String, required: true }
 })
 
