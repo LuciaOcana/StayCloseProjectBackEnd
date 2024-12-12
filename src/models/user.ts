@@ -22,7 +22,7 @@ export const userSchema = new Schema<userInterface>({
     email: { type: String, required: true },
     password: { type: String, required: true },
     actualUbication: [],
-    inHome: { type: Boolean},
+    inHome: { type: Boolean, default: false},
     admin: {type: Boolean, default: false},
     //isEnabled: {type:Boolean, default: true} //por defecto usuarios habilitados
     disabled:{type:Boolean, default:false},
