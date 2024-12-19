@@ -70,3 +70,25 @@ export async function deleteEntry(req: Request, res: Response): Promise<void> {
         res.status(500).json({ message: 'Error al eliminar la ubicacio' });
     }
 }
+
+// Buscar ubicaciones cercanas
+// Buscar ubicaciones cercanas (cambiando para parámetros de ruta)
+export async function findNearby(req: Request, res: Response): Promise<void> {
+    const { lat, lon, distance } = req.params;
+    if (!lat || !lon || !distance) {
+        res.status(400).json({ message: "Faltan parámetros" });
+        return;
+    }
+    
+    try {
+        const nearbyUbis = await ubiServices.getEntries.distancepoints(
+            parseFloat(lat),
+            parseFloat(lon),
+            parseFloat(distance)
+        );
+        res.status(200).json(nearbyUbis);
+    } catch (error) {
+        console.error('Error al buscar ubicaciones cercanas:', error);
+        res.status(500).json({ message: 'Error al buscar ubicaciones cercanas' });
+    }
+}

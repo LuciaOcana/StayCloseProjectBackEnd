@@ -26,5 +26,18 @@ export const getEntries = {
     // Eliminar una ubi por ID
     delete: async(id:string)=>{
         return await ubifDB.findByIdAndDelete(id);
-    }
+    },
+
+    // Punts a distancia X
+    distancepoints: async (lat: number, lon: number, distance: number) => {
+        console.log('Arribo eooo')
+        return await ubifDB.find({
+          ubication: {
+            $nearSphere: {
+              $geometry: { type: "Point", coordinates: [lon, lat] }, // Longitud, Latitud
+              $maxDistance: distance * 1000, // Distancia en metros
+            },
+          },
+        });
+      }
 }
