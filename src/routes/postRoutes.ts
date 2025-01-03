@@ -14,7 +14,7 @@ postRouter.post("/", createPost);
 postRouter.get("/:id", getPost);
 
 //Ruta per obtenir tots els post d'un usuari
-postRouter.get("/:id/authorPosts",getAuthorPosts );
+postRouter.get("/authorPosts/:id",getAuthorPosts );
 
 //Ruta per eliminar post per id
 postRouter.delete("/:id", deletePost);
