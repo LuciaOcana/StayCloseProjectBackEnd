@@ -10,7 +10,7 @@ ubiRouter.get("/", getAll);
 // Ruta per obtenir una ubi per ID
 ubiRouter.get("/:id", findById);
 
-// Ruta per crec una nova ubi
+// Ruta per crear una nova ubi
 ubiRouter.post("/", create);
 
 // Ruta per actualitzar una ubi per ID

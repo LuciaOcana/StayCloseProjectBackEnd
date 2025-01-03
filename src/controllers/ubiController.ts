@@ -32,12 +32,16 @@ export async function findById(req: Request, res: Response): Promise<void> {
 // Crear una nueva ubicación
 export async function create(req: Request, res: Response): Promise<void> {
     try {
-        const { name, horari, tipo, ubication, address, comentari } = req.body;
-        if (!name || !horari || !tipo || !ubication || !address || !comentari) {
+        const { name, horari, tipo, address, comentari } = req.body;
+
+        // Verificar que los campos obligatorios estén presentes
+        if (!name || !horari || !tipo || !address || !comentari) {
             res.status(400).json({ message: 'Faltan datos obligatorios' });
             return;
         }
-        const newUbi = await ubiServices.getEntries.create(req.body);
+
+        // Crear la ubicación con geocodificación incluida
+        const newUbi = await ubiServices.getEntries.create({ name, horari, tipo, address, comentari });
         res.status(201).json(newUbi);
     } catch (error) {
         console.error('Error al crear una ubicación:', error);

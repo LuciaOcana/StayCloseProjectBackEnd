@@ -22,7 +22,10 @@ Paginació d'usuaris funcionant
 - npm install
 - tsc  
 - node build/index.js or npm run start
-
+------------To run geocoder-------------
+- npm audit fix
+- npm audit fix --force
+- npm install node-geocoder
 ---------------------------------------
 Lucia:
 Se ha implementado el geospatial, en el backend funciona pero hay que arreglar las demas funciones (crear, get...) para que acabe de funcionar el frontend
