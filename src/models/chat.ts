@@ -1,4 +1,4 @@
-import { model,  Schema } from "mongoose";
+/*import { model,  Schema } from "mongoose";
 
 
 export interface chatInterface{
@@ -14,4 +14,23 @@ export const chatSchema = new Schema<chatInterface>({
     participants: [{ type: String }]
 })
 
-export const chatofDB = model<chatInterface>('chat',chatSchema)
+export const chatofDB = model<chatInterface>('chat',chatSchema)*/
+
+//***********Para manejar las conversaciones 
+
+
+import mongoose, { Schema, Document } from "mongoose";
+
+export interface IChat extends Document {
+  name?: string;
+  isGroup: boolean;
+  participants: string[];
+}
+
+const ChatSchema: Schema = new Schema({
+  name: { type: String, required: false },
+  isGroup: { type: Boolean, required: true },
+  participants: { type: [String], required: true },
+});
+
+export default mongoose.model<IChat>("Chat", ChatSchema);
