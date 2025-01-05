@@ -69,5 +69,51 @@ export const getEntries = {
         const user= await userofDB.findByIdAndUpdate(id, {disabled:true}, {new: true});
         if (!user) throw new Error('Usuario no encontrado');
         return user;
+    },
+
+    //Obtener usuarios por su estado online offline
+    findUsersByStatus: async (status: string) => {
+        try {
+          return await userofDB.find({ online: status }, "username name online");
+        } catch (error) {
+          console.error("Error al obtener usuarios por estado:", error);
+          throw error;
+        }
+      },
+
+    //obtener grupos de chat 
+    findGroups: async () => {
+        try {
+          return await userofDB.find({ isGroup: true }, "username name isGroup");
+        } catch (error) {
+          console.error("Error al obtener grupos:", error);
+          throw error;
+        }
+      },
+
+       // Manejar conexión de usuario (marcar como online)
+  connectUser: async (id: string) => {
+    try {
+      const user = await userofDB.findByIdAndUpdate(id, { online: true }, { new: true });
+      if (!user) throw new Error('Usuario no encontrado');
+      console.log(`Usuario ${user.username} conectado`);
+      return user;
+    } catch (error) {
+      console.error("Error al conectar usuario:", error);
+      throw error;
     }
+  },
+  // Manejar desconexión de usuario (marcar como offline)
+  disconnectUser: async (id: string) => {
+    try {
+      const user = await userofDB.findByIdAndUpdate(id, { online: false }, { new: true });
+      if (!user) throw new Error('Usuario no encontrado');
+      console.log(`Usuario ${user.username} desconectado`);
+      return user;
+    } catch (error) {
+      console.error("Error al desconectar usuario:", error);
+      throw error;
+    }
+  },
+
 };

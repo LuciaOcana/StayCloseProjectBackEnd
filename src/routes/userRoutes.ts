@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol, disableUser, enableUser, PingPong } from '../controllers/userController';
+import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol, disableUser, enableUser, PingPong , getOnlineUsers, getGroups } from '../controllers/userController';
 import { TokenValidation } from '../middlewares/verifyJWT';
 //import { verifyOwnership } from '../middlewares/verifyOwner';
 import { AdminValidation } from '../middlewares/verifyAdmin';
@@ -41,6 +41,14 @@ router.patch("/enable/:id", TokenValidation, AdminValidation, enableUser );
 
 //Ruta para Deshabilitar un usuario por ID
 router.patch("/disable/:id", TokenValidation, AdminValidation, disableUser);
+
+//Ruta para obtener usuarios conectados
+router.get("/online", TokenValidation, getOnlineUsers);
+
+// Ruta para obtener grupos
+router.get("/groups", TokenValidation, getGroups);
+
+
 
 
 export default router 

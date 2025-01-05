@@ -14,8 +14,15 @@ const app = express()
 app.use(express.json())
 run();
 
-app.use(cors());
+//app.use(cors());
 app.use(express.json() as RequestHandler);
+app.use(
+    cors({
+      origin: ["http://localhost:3000", "http://localhost:8080"], // Frontend y WebSocket
+      credentials: true,
+    })
+  );
+  
 
 const PORT = 3000;
 

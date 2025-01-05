@@ -215,3 +215,31 @@ export async function disableUser (req: Request, res: Response): Promise<Respons
 export async function PingPong(_req: Request, res: Response): Promise<Response> {
     return res.status(200).json({ message: "pong" });
 }
+
+//Función para obtener usuarios conectados 
+
+export async function getOnlineUsers(_req: Request, res: Response): Promise<Response> {
+    try {
+      const onlineUsers = await userServices.getEntries.findUsersByStatus("online");
+      if (!onlineUsers || onlineUsers.length === 0) {
+        return res.status(404).json({ message: "No hay usuarios conectados" });
+      }
+      return res.status(200).json(onlineUsers);
+    } catch (error) {
+      console.error("Error al obtener usuarios conectados:", error);
+      return res.status(500).json({ error: "Error al obtener usuarios conectados" });
+    }
+  }
+// Función para obtener grupos
+export async function getGroups(_req: Request, res: Response): Promise<Response> {
+    try {
+      const groups = await userServices.getEntries.findGroups();
+      if (!groups || groups.length === 0) {
+        return res.status(404).json({ message: "No hay grupos disponibles" });
+      }
+      return res.status(200).json(groups);
+    } catch (error) {
+      console.error("Error al obtener grupos:", error);
+      return res.status(500).json({ error: "Error al obtener grupos" });
+    }
+  }
