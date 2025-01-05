@@ -219,7 +219,7 @@ export async function PingPong(_req: Request, res: Response): Promise<Response> 
 //Función para obtener usuarios conectados 
 
 export async function getOnlineUsers(_req: Request, res: Response): Promise<Response> {
-    try {
+    /*try {
       const onlineUsers = await userServices.getEntries.findUsersByStatus("online");
       if (!onlineUsers || onlineUsers.length === 0) {
         return res.status(404).json({ message: "No hay usuarios conectados" });
@@ -228,7 +228,22 @@ export async function getOnlineUsers(_req: Request, res: Response): Promise<Resp
     } catch (error) {
       console.error("Error al obtener usuarios conectados:", error);
       return res.status(500).json({ error: "Error al obtener usuarios conectados" });
-    }
+    }*/
+      try {
+        // Cambia esto para usar el método correcto del servicio
+        const onlineUsers = await userServices.getEntries.findUsersByStatus("online");
+        
+        if (!onlineUsers || onlineUsers.length === 0) {
+          return res.status(200).json([]); // Devuelve una lista vacía si no hay usuarios
+        }
+        return res.status(200).json(onlineUsers);
+      } catch (error) {
+        console.error("Error al obtener usuarios conectados:", error);
+        return res.status(500).json({ error: "Error al obtener usuarios conectados" });
+      }
+   
+
+
   }
 // Función para obtener grupos
 export async function getGroups(_req: Request, res: Response): Promise<Response> {

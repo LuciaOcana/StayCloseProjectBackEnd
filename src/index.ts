@@ -11,18 +11,26 @@ import { initializeWebSocket } from './utils/websocket'
 //import './types/express'
 
 const app = express()
-app.use(express.json())
+//app.use(express.json())
 run();
+app.options("*", cors());
 
 //app.use(cors());
 app.use(express.json() as RequestHandler);
+
+app.use((req, _, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
 app.use(
     cors({
-      origin: ["http://localhost:3000", "http://localhost:8080"], // Frontend y WebSocket
+      origin:[ "http://localhost:3000", "http://localhost:8080", "http://127.0.0.1:3000","http://localhost:55284",], // Frontend y WebSocket
+      methods:['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization'],
     })
   );
-  
 
 const PORT = 3000;
 

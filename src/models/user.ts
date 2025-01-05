@@ -35,4 +35,4 @@ export const userSchema = new Schema<userInterface>({
 })
 
 export const userofDB = model<userInterface>('user',userSchema);
-export default userofDB;
+//export default userofDB;
