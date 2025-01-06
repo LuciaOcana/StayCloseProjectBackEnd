@@ -14,14 +14,25 @@ const app = express()
 app.use(express.json())
 run();
 
-//app.use(cors());
 app.use(express.json() as RequestHandler);
+
+//comfiguracion del CORS
 app.use(
     cors({
-      origin: ["http://localhost:3000", "http://localhost:8080"], // Frontend y WebSocket
+      origin: '*', // Frontend y WebSocket
       credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE'], 
     })
   );
+
+// Manejo de solicitudes OPTIONS
+app.options('*', cors({
+  origin: '*',
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}));
   
 
 const PORT = 3000;
