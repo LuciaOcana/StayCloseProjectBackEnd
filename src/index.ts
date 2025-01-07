@@ -33,6 +33,15 @@ app.options('*', cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
+
+// Middleware para manejar solicitudes OPTIONS
+app.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Permite cualquier origen
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, PATCH, POST, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
   
 
 const PORT = 3000;
