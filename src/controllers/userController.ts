@@ -46,6 +46,7 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
     try {
         console.log('Get user');
         const id = req.params.id;
+        console.log(id);
         const user = await userServices.getEntries.findById(id);
 
         if(!user) {
@@ -78,8 +79,8 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     try{
         console.log('Update user');
         const id = req.params.id;
-        const { username, name, email, password } = req.body as userInterface;
-        const updatedUser: Partial<userInterface> = { username, name, email, password };
+        const { username, name, email, password, avatar, home } = req.body as userInterface;
+        const updatedUser: Partial<userInterface> = { username, name, email, password, avatar, home };
         const user = await userServices.getEntries.updateUserById(id, updatedUser);
 
         if(!user) {
