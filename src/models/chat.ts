@@ -1,17 +1,25 @@
-import { model,  Schema } from "mongoose";
+import { Schema, model, Types, Document} from 'mongoose';
 
-
-export interface chatInterface{
-    //chatID: string, *¿PONEMOS UNA ID NOSOTRAS O ESCOGEMOS LA QUE ASIGNA MONGO POR DEFECTO?* 
-    chatType: boolean,
-    participants: []
+interface IMessage {
+  sender: Types.ObjectId; // ID del usuario que envió el mensaje
+  content: string;
+  timestamp: Date;
 }
 
-export type newChatInfo = Omit<chatInterface,'id'>
+interface IChat extends Document{
+  participants:Types.ObjectId[]; // ListaIDs de los participantes
+  messages: IMessage[];
+}
 
-export const chatSchema = new Schema<chatInterface>({
-    chatType: { type: Boolean, required: true },
-    participants: [{ type: String }]
-})
+const messageSchema = new Schema<IMessage>({
+  sender: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+  content: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+});
 
-export const chatofDB = model<chatInterface>('chat',chatSchema)
+const chatSchema = new Schema<IChat>({
+  participants: [{ type: Schema.Types.ObjectId, ref: 'user', required: true }],
+  messages: [messageSchema],
+});
+
+export const ChatModel = model<IChat>('Chat', chatSchema);
