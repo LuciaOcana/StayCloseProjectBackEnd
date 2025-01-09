@@ -11,7 +11,6 @@ import { postInterface } from "../models/post";
 
 export async function getPosts(_req: Request, res: Response): Promise<Response> {
    try {
-    
     console.log("Get posts");
     const posts = await postServices.getEntries.getAll();
     console.log("post", posts);
@@ -23,22 +22,22 @@ export async function getPosts(_req: Request, res: Response): Promise<Response> 
 
 export async function createPost(req: Request, res: Response): Promise<Response> {
    try {
-      const { author, postType, content, image, postDate } = req.body as postInterface;
+    const { author, postType, content, image, postDate } = req.body as postInterface;
 
-      // Comprobamos si el usuario existe
-      const userExists = await postServices.getEntries.checkIfUserExists(author);
-      if (!userExists) {
-          return res.status(400).json({ error: "User does not exist" });
-      }
+    // Comprobamos si el usuario existe
+    const userExists = await postServices.getEntries.checkIfUserExists(author);
+    if (!userExists) {
+        return res.status(400).json({ error: "User does not exist" });
+    }
 
       // Creamos un nuevo objeto de post
-      const newPost: postInterface = {
-          author,
-          postType,
-          content,
-          image: image || '',
-          postDate: postDate ? new Date(postDate) : new Date(),
-      };
+    const newPost: postInterface = {
+        author,
+        postType,
+        content,
+        image: image || '',
+        postDate: postDate ? new Date(postDate) : new Date(),
+    };
 
       // Usamos el servicio para crear el post
       const post = await postServices.getEntries.create(newPost);
@@ -51,8 +50,9 @@ export async function createPost(req: Request, res: Response): Promise<Response>
       //console.error("Error creating post:", error.message); // Muestra el error en la consola
       return res.status(500).json({ error: 'Failed to create post' }); // Devuelve un mensaje de error al frontend
   }
-  }
-  export async function updatePost(req: Request, res: Response): Promise<Response> {
+}
+
+export async function updatePost(req: Request, res: Response): Promise<Response> {
    try{
        console.log('Get post');
        const id = req.params.id;
@@ -71,6 +71,7 @@ export async function createPost(req: Request, res: Response): Promise<Response>
        return res.status(500).json({ error: 'Failed to update post' });
    }
 }
+
 export async function deletePost(req: Request, res: Response): Promise<Response> {
    try{
        console.log('Delete post');
@@ -113,3 +114,18 @@ export async function getAuthorPosts(req: Request, res: Response): Promise<Respo
       return res.status(500).json({ error: 'Failed to get post' });
    } 
 }
+
+export async function getPostByType(req: Request, res: Response): Promise<Response> {
+    try{
+       const type = req.params.type;
+       console.log('Get post from Type: ', type);
+       const posts = await postServices.getEntries.findbyPostType(type);
+       console.log(posts);
+       if(!posts){
+        return res.status(404).json({ error: `User with id ${type} not found` });
+       }
+    return res.json(posts)
+    } catch (error) {
+    return res.status(500).json({ error: 'Failed to get post' });
+    } 
+ }

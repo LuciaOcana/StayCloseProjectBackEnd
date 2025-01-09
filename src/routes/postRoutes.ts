@@ -1,5 +1,5 @@
 import express from 'express'
-import {getPosts, createPost, updatePost, deletePost, getPost, getAuthorPosts} from '../controllers/postController'
+import {getPosts, createPost, updatePost, deletePost, getPost, getAuthorPosts, getPostByType} from '../controllers/postController'
 
 
 const postRouter = express.Router();
@@ -21,5 +21,8 @@ postRouter.delete("/:id", deletePost);
 
 //Ruta per actialitzar usuari per id
 postRouter.put("/:id", updatePost);
+
+//Ruta per obtenir posts per categoria de post
+postRouter.get("/type/:type", getPostByType);
 
 export default postRouter 

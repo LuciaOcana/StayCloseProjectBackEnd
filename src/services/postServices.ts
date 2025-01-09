@@ -36,6 +36,10 @@ export const getEntries = {
     findByAuthor: async(id:string)=>{
         return await postofDB.find({author: id});
     },
+    // Tots els post de una categoria especifica
+    findbyPostType: async(type:string)=>{
+        return await postofDB.find({postType: type});
+    },
     // Comprobar si el usuario existe por nombre de usuario
     checkIfUserExists: async (username: string): Promise<boolean> => {
         const user = await userofDB.findOne({ username: username });
