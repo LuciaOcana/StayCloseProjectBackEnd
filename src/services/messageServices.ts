@@ -19,6 +19,7 @@ const validateMessage = (message: IMessage): void => {
   };
 
 // Guardar mensaje
+/*
 export const saveMessage = async (message: IMessage): Promise<IMessage> => {
     try {
         // Validación
@@ -34,6 +35,41 @@ export const saveMessage = async (message: IMessage): Promise<IMessage> => {
     }
  
 };
+
+*/
+/*
+
+export const saveMessage = async (messageData: any) => {
+  try {
+    const message = new Message(messageData);
+    return await message.save();
+  } catch (error) {
+    console.error("Error al guardar el mensaje:", error);
+    throw new Error("Error al guardar el mensaje");
+  }
+};
+
+*/
+
+// Guardar mensaje
+export const saveMessage = async (messageData: IMessage): Promise<IMessage> => {
+  try {
+    // Validar mensaje antes de guardarlo
+    validateMessage(messageData);
+
+    console.log("Guardando mensaje en la base de datos:", messageData);
+    const newMessage = new Message(messageData);
+    const savedMessage = await newMessage.save();
+    console.log("Mensaje guardado con éxito:", savedMessage);
+
+    return savedMessage;
+  } catch (error) {
+    console.error("Error al guardar el mensaje:", error);
+    throw new Error("Error al guardar el mensaje");
+  }
+};
+
+
 
 // Obtener mensajes por chat ID
 export const getMessagesByChatId = async (chatId: string): Promise<IMessage[]> => {

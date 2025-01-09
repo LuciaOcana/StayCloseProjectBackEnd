@@ -30,7 +30,8 @@ export const getEntries = {
     },
     // Actualizar un usuario por ID
     updateUserById: async(id:string,body:object)=>{
-        console.log(body);
+        //console.log(body);
+        console.log(`Actualizando usuario ${id} con datos:`, body);
         return await userofDB.findByIdAndUpdate(id,body,{$new:true});
     },
     // Eliminar un usuario por ID
@@ -72,7 +73,7 @@ export const getEntries = {
     },
 
     //Obtener usuarios por su estado online offline
-    findUsersByStatus: async (status: string) => {
+    findUsersByStatus: async (status: boolean) => {
         try {
           return await userofDB.find({ online: status }, "username name online");
         } catch (error) {
@@ -115,5 +116,7 @@ export const getEntries = {
       throw error;
     }
   },
+
+
 
 };

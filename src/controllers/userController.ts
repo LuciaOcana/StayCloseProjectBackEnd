@@ -220,7 +220,7 @@ export async function PingPong(_req: Request, res: Response): Promise<Response> 
 
 export async function getOnlineUsers(_req: Request, res: Response): Promise<Response> {
     try {
-      const onlineUsers = await userServices.getEntries.findUsersByStatus("online");
+      const onlineUsers = await userServices.getEntries.findUsersByStatus(true);
       if (!onlineUsers || onlineUsers.length === 0) {
         return res.status(404).json({ message: "No hay usuarios conectados" });
       }
@@ -243,3 +243,23 @@ export async function getGroups(_req: Request, res: Response): Promise<Response>
       return res.status(500).json({ error: "Error al obtener grupos" });
     }
   }
+
+
+  // Función para actualizar el estado online
+export async function updateOnlineStatus(req: Request, res: Response): Promise<Response> {
+    try {
+        const { online } = req.body; // Extraemos el estado online desde el cuerpo de la solicitud
+        const userId = req.user; // Obtenemos el ID del usuario desde el middleware TokenValidation
+        if (!userId) {
+            return res.status(400).json({ message: "ID de usuario no proporcionado" });
+        }
+        const updatedUser = await userServices.getEntries.updateUserById(userId, { online });
+        if (!updatedUser) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+        return res.status(200).json({ message: "Estado online actualizado correctamente", user: updatedUser });
+    } catch (error) {
+        console.error("Error al actualizar el estado online:", error);
+        return res.status(500).json({ message: "Error interno del servidor" });
+    }
+}

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol, disableUser, enableUser, PingPong , getOnlineUsers, getGroups } from '../controllers/userController';
+import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol, disableUser, enableUser, PingPong , getOnlineUsers, getGroups,updateOnlineStatus } from '../controllers/userController';
 import { TokenValidation } from '../middlewares/verifyJWT';
 //import { verifyOwnership } from '../middlewares/verifyOwner';
 import { AdminValidation } from '../middlewares/verifyAdmin';
@@ -48,7 +48,8 @@ router.get("/online", TokenValidation, getOnlineUsers);
 // Ruta para obtener grupos
 router.get("/groups", TokenValidation, getGroups);
 
-
+// **Nueva ruta para actualizar el estado online**
+router.put("/updateOnlineStatus", TokenValidation, updateOnlineStatus);
 
 
 export default router 
