@@ -1,25 +1,18 @@
-import { Schema, model, Types, Document} from 'mongoose';
+import { Schema, model, Types, Document } from "mongoose";
 
-interface IMessage {
-  sender: Types.ObjectId; // ID del usuario que envió el mensaje
-  content: string;
-  timestamp: Date;
+// Interfaz de Chat
+export interface IChat extends Document {
+  participants: Types.ObjectId[]; // IDs de los usuarios que participan en el chat
+  createdAt: Date; // Fecha de creación del chat
+  messages: Types.ObjectId[]; 
 }
 
-interface IChat extends Document{
-  participants:Types.ObjectId[]; // ListaIDs de los participantes
-  messages: IMessage[];
-}
-
-const messageSchema = new Schema<IMessage>({
-  sender: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-  content: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now },
-});
-
+// Esquema de Chat
 const chatSchema = new Schema<IChat>({
-  participants: [{ type: Schema.Types.ObjectId, ref: 'user', required: true }],
-  messages: [messageSchema],
+  participants: [{ type: Schema.Types.ObjectId, ref: "user", required: true }], // Usuarios en el chat
+  messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
+  createdAt: { type: Date, default: Date.now },
 });
 
-export const ChatModel = model<IChat>('Chat', chatSchema);
+// Modelo de Chat
+export const ChatModel = model<IChat>("Chat", chatSchema);

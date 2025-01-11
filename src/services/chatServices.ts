@@ -1,37 +1,21 @@
-import { ChatModel } from '../models/chat';
-import { Types } from 'mongoose';
+import { Types } from "mongoose";
+import { ChatModel } from "../models/chat";
 
 export const chatService = {
+  // Crear un nuevo chat
   createChat: async (participants: string[]) => {
     const chat = await ChatModel.create({
-      participants: participants.map((id) => new Types.ObjectId(id)), // Convertir a ObjectId
+      participants: participants.map((id) => new Types.ObjectId(id)),
       messages: [],
     });
     return chat;
   },
 
-  sendMessage: async (chatId: string, sender: string, content: string) => {
-    const chat = await ChatModel.findById(chatId);
-    if (!chat) throw new Error('Chat not found');
-    chat.messages.push({
-      sender: new Types.ObjectId(sender), // Convertir a ObjectId
-      content,
-      timestamp: new Date(),
-    });
-    await chat.save();
-    return chat;
-  },
-
-  getChatMessages: async (chatId: string) => {
-    const chat = await ChatModel.findById(chatId).populate('participants');
-    if (!chat) throw new Error('Chat not found');
-    return chat.messages;
-  },
-
+  // Obtener los chats de un usuario
   getUserChats: async (userId: string) => {
     const chats = await ChatModel.find({
-      participants: new Types.ObjectId(userId), // Convertir a ObjectId
-    }).populate('participants');
+      participants: new Types.ObjectId(userId),
+    }).populate("participants");
     return chats;
   },
 };

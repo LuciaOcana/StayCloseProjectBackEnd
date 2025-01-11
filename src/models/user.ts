@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 
 export interface userInterface{
+
     username: string,
     name: string,
     email: string,
@@ -11,7 +12,8 @@ export interface userInterface{
     //isEnabled: boolean
     disabled:boolean,
     avatar: string,
-    home: string
+    home: string,
+   
 }
 
 export type UsersInterfacePublicInfo = Pick<userInterface, 'username' | 'name' >
