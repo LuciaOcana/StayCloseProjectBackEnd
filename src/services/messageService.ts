@@ -24,8 +24,8 @@ export const messageService = {
   // Obtener mensajes de un chat
   getChatMessages: async (chatId: string) => {
     const messages = await MessageModel.find({ chat: chatId })
-      .populate("sender")
-      .populate("receiver");
+      .populate("sender","username")
+      .populate("receiver", "username");
     return messages;
   },
 };
