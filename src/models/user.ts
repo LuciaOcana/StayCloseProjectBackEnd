@@ -16,9 +16,19 @@ export interface userInterface{
    
 }
 
+// Interfaz para usuarios conectados
+export interface ConnectedUser {
+    username: string;
+    //email: string;
+    socketId: string;
+  }
+
+
 export type UsersInterfacePublicInfo = Pick<userInterface, 'username' | 'name' >
 export type newUserInfo = Omit<userInterface,'id' | 'isEnabled'>
 export type login = Pick<userInterface, 'username' | 'password' >
+
+
 
 export const userSchema = new Schema<userInterface>({
     username: { type: String, required: true },
