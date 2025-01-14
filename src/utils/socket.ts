@@ -1,108 +1,213 @@
 import { Server, Socket } from "socket.io";
-import { ChatModel } from "../models/chat";
 import { MessageModel } from "../models/message";
-import { ConnectedUser, userofDB } from "../models/user";
+import { userofDB, ConnectedUser} from "../models/user";
+import { ChatModel } from "../models/chat";
+
 
 
 // Lista de usuarios conectados
 export let connectedUsers: ConnectedUser[] = [];
 
+
 // ====================== FUNCIONES AUXILIARES ======================
 
-/**
- * Añade un usuario conectado a la lista
- */
-const addConnectedUser = (username: string, socketId: string ): void => {
+/*** Añade un usuario conectado a la lista.*/
+
+const addConnectedUser = (username: string, socketId: string, io:Server): void => {
   const existingUser = connectedUsers.find((user) => user.username === username);
   if (!existingUser) {
     connectedUsers.push({ username, socketId });
+    console.log(`Usuario añadido a la lista de conectados: ${username}`);
+    //io.emit("ConnectedUser", connectedUsers);
+  } else {
+    existingUser.socketId = socketId;
+    console.log(`Socket actualizado para el usuario: ${username}`);
   }
+  io.emit("connectedUsers", connectedUsers.map(({ username }) => ({ username })));
+
+
+};
+
+
+  
+
+/*** Elimina un usuario de la lista de conectados.*/
+
+const removeConnectedUser = ( socketId: string, io: Server): void => {
+    connectedUsers = connectedUsers.filter((user) => user.socketId !== socketId);
+  console.log(`Usuario con socket ${socketId} desconectado.`);
+  io.emit("connectedUsers", connectedUsers.map(({ username }) => ({ username })));
+  };
+  
+
+
+/**
+ * Obtiene un usuario conectado por su nombre de usuario.
+ */
+
+const getUserByUsername = (username: string): ConnectedUser | undefined => {
+  return connectedUsers.find((user) => user.username === username);
 };
 
 /**
- * Elimina un usuario de la lista de conectados
+ * Obtiene un usuario conectado por email
  */
-const removeConnectedUser = (socketId: string): void => {
-  connectedUsers = connectedUsers.filter((user) => user.socketId !== socketId);
-};
+/*
+const getUserByEmail = (email: string) =>
+    connectedUsers.find((user) => user.email === email);
+*/
 
-// ====================== SOCKET.IO HANDLER ======================
+/** Busca un usuario conectado por su socket ID. */
+// const getUserBySocketId = (socketId: string): ConnectedUser | undefined => {
+   // return connectedUsers.find((user) => user.socketId === socketId);
+  //};
+
+  // ====================== MANEJADORES DE EVENTOS ======================
+
+/**
+ * Configuración del socket.io
+ */
 export default function setupSocketIO(io: Server) {
   io.on("connection", (socket: Socket) => {
     console.log("Nuevo cliente conectado:", socket.id);
-// Evento: Registrar un usuario como conectado
-socket.on("userConnected", async ({ username }: { username: string }) => {
-    try {
-      const user = await userofDB.findOne({ username }); // Busca en la base de datos
-      if (user) {
-        // Usa la función addConnectedUser
-        addConnectedUser(user.username, socket.id);
-        console.log(`Usuario conectado: ${username}`);
-        
-        // Emitir lista actualizada de usuarios conectados
-        io.emit(
-          "connectedUsers",
-          connectedUsers.map(({ username }) => ({ username }))
-        );
-      } else {
-        console.error("Usuario no encontrado:", username);
-        socket.emit("error", { message: "Usuario no encontrado" });
-      }
-    } catch (error) {
-      console.error("Error en userConnected:", error);
-      socket.emit("error", { message: "Error al conectar usuario" });
-    }
-  });
-      
 
-    // Evento: Obtener lista de usuarios conectados
-    socket.on("getConnectedUsers", () => {
-      socket.emit("connectedUsers", connectedUsers.map(({ username }) => ({ username })));
-    });
+    /* Evento: Obtener lista de usuarios conectados
+    */
+   socket.on("getConnectedUsers", () => {
+    socket.emit("connectedUsers", connectedUsers.map(({ username }) => ({ username })));
+   });
 
-    // Evento: Iniciar un chat único o usar uno existente
-    socket.on(
-      "startUniqueChat",
-      async ({ receiverUsername, senderUsername }: { receiverUsername: string; senderUsername: string }) => {
+    // Evento: Registrar un usuario como conectado
+    socket.on("userConnected", async ({ username }: { username: string }) => {
         try {
-          const receiver = connectedUsers.find((user) => user.username === receiverUsername);
-          const sender = connectedUsers.find((user) => user.username === senderUsername);
-
-          if (!receiver || !sender) {
-            socket.emit("error", { message: "Usuario no conectado" });
+          if (!username ) {
+            console.error("Datos incompletos: username.");
             return;
           }
-
-          const existingChat = await ChatModel.findOne({
-            participants: { $all: [receiverUsername, senderUsername] },
-          });
-
-          let chat;
-          if (existingChat) {
-            chat = existingChat;
+      
+          const user = await userofDB.findOne({ username }); // Busca el usuario por email en la base de datos
+          if (user) {
+            addConnectedUser(username, socket.id, io); // Añade a la lista de conectados
+            console.log(`Usuario conectado: ${username}`);
+      
+            // Emite la lista actualizada de usuarios conectados a todos los clientes
+            io.emit("connectedUsers", connectedUsers.map(({ username }) => ({ username })));
           } else {
-            chat = await ChatModel.create({
-              participants: [receiverUsername, senderUsername],
-              messages: [],
-            });
+            console.error(`Usuario con username ${username} no encontrado en la base de datos.`);
           }
-
-          const roomID = chat.id.toString();
-          socket.join(roomID);
-          io.to(receiver.socketId).emit("openChat", {
-            chatId: roomID,
-            participants: [receiverUsername, senderUsername],
-          });
-          socket.emit("openChat", {
-            chatId: roomID,
-            participants: [receiverUsername, senderUsername],
-          });
         } catch (error) {
-          console.error("Error al iniciar chat único:", error);
-          socket.emit("error", { message: "Error al iniciar chat único" });
+          console.error("Error en userConnected:", error);
         }
-      }
-    );
+      });
+      
+      
+
+    // Evento: Unirse a un chat
+    /*
+    socket.on("joinChat", (chatId: string) => {
+      socket.join(chatId);
+      console.log(`Usuario ${socket.id} se unió al chat ${chatId}`);
+    });
+    */
+
+     // Evento: Unirse a un chat
+     socket.on("joinChat", async (chatId: string) => {
+        try {
+          const chat = await ChatModel.findById(chatId);
+          if (!chat) {
+            console.error(`Chat ${chatId} no encontrado.`);
+            socket.emit("error", { message: "Chat no encontrado" });
+            return;
+          }
+          socket.join(chatId);
+          console.log(`Usuario ${socket.id} se unió al chat ${chatId}`);
+        } catch (error) {
+          console.error("Error al unirse al chat:", error);
+        }
+      });
+    
+    //**Construyendo */
+    /*
+    socket.on("sendMessage", ({ chatId, sender, receiver, content }) => {
+        console.log("Mensaje recibido en el servidor:", { chatId, sender, receiver, content });
+        const receiverUser = getUserByUsername(receiver);
+        if (receiverUser) {
+          io.to(receiverUser.socketId).emit("receiveMessage", {
+            chatId,
+            sender,
+            receiver,
+            content,
+            timestamp: new Date(),
+          });
+          console.log(`Mensaje enviado a ${receiver}: ${content}`);
+        } else {
+          console.error(`El usuario receptor ${receiver} no está conectado.`);
+        }
+      });
+      */
+      socket.on("sendMessage", async ({ chatId, sender, receiver, content }) => {
+        try {
+          const chat = await ChatModel.findById(chatId);
+          if (!chat) {
+            console.error(`Chat ${chatId} no encontrado.`);
+            socket.emit("error", { message: "Chat no encontrado" });
+            return;
+          }
+  
+          const message = await MessageModel.create({
+            sender,
+            receiver,
+            content,
+            chat: chatId,
+            timestamp: new Date(),
+          });
+  
+          chat.messages.push(message.id);
+          await chat.save();
+  
+          const receiverUser = getUserByUsername(receiver);
+          if (receiverUser) {
+            io.to(receiverUser.socketId).emit("receiveMessage", message);
+          }
+  
+          console.log(`Mensaje enviado de ${sender} a ${receiver}: ${content}`);
+        } catch (error) {
+          console.error("Error al enviar mensaje:", error);
+        }
+      });
+    
+      
+      socket.on(
+        "startUniqueChat",
+        async ({
+          receiverUsername,
+          senderUsername,
+        }: {
+          receiverUsername: string;
+          senderUsername: string;
+        }) => {
+          try {
+            const existingChat = await ChatModel.findOne({
+              participants: { $all: [receiverUsername, senderUsername] },
+            });
+      
+            if (existingChat) {
+              socket.emit("openChat", existingChat);
+            } else {
+              const newChat = await ChatModel.create({
+                participants: [receiverUsername, senderUsername],
+                messages: [],
+              });
+      
+              socket.emit("openChat", newChat);
+            }
+          } catch (error) {
+            console.error("Error al iniciar chat único:", error);
+            socket.emit("error", { message: "Error al iniciar chat único" });
+          }
+        }
+      );
+      
 
     // Evento: Cargar mensajes previos de un chat
     socket.on("loadMessages", async ({ chatId }: { chatId: string }) => {
@@ -117,58 +222,18 @@ socket.on("userConnected", async ({ username }: { username: string }) => {
       }
     });
 
-
-    //Evento: Enviar mensaje
-    socket.on("sendMessage", async ({ chatId, sender, receiver, content }) => {
-        try {
-          const receiverSocket = connectedUsers.find((user) => user.username === receiver)?.socketId;
-      
-          if (!receiverSocket) {
-            console.log(`El usuario receptor ${receiver} no está conectado.`);
-            return;
-          }
-      
-          // Crear y guardar el mensaje en la base de datos
-          const message = await MessageModel.create({
-            sender,
-            receiver,
-            content,
-            chat: chatId,
-            timestamp: new Date(),
-          });
-      
-          // Enviar el mensaje al usuario receptor
-          io.to(receiverSocket).emit("receiveMessage", {
-            sender,
-            content,
-            chatId,
-            timestamp: message.timestamp,
-          });
-      
-          // Opcional: Emitir el mensaje al remitente para actualizar el chat local
-          socket.emit("receiveMessage", {
-            sender,
-            content,
-            chatId,
-            timestamp: message.timestamp,
-          });
-      
-          console.log(`Mensaje enviado de ${sender} a ${receiver}: ${content}`);
-        } catch (error) {
-          console.error("Error al enviar el mensaje:", error);
-          socket.emit("error", { message: "No se pudo enviar el mensaje." });
-        }
-      });
-      
-
-
-
-
     // Evento: Desconectar usuario
     socket.on("disconnect", () => {
       console.log("Socket desconectado:", socket.id);
-      removeConnectedUser(socket.id);
+
+       // Remover usuario del array de usuarios conectados
+  connectedUsers = connectedUsers.filter((user) => user.socketId !== socket.id);
+
+      removeConnectedUser(socket.id, io);
+      //io.emit("connectedUsers", connectedUsers); //enviar lista actualizada 
+      //console.log(`usuarios conectados actuales `, connectedUsers);
       io.emit("connectedUsers", connectedUsers.map(({ username }) => ({ username })));
+      console.log(`Usuarios conectados actuales:`, connectedUsers);
     });
   });
 }

@@ -19,7 +19,6 @@ export interface userInterface{
 // Interfaz para usuarios conectados
 export interface ConnectedUser {
     username: string;
-    //email: string;
     socketId: string;
   }
 

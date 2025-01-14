@@ -1,16 +1,9 @@
 /*import { ChatModel } from "../models/chat";
 import { Socket } from "socket.io";
-import { v4 as uuidV4 } from "uuid";
+import { ConnectedUser, userofDB } from "../models/user";
 import { userofDB, ConnectedUser } from "../models/user";
 
-interface IUser {
-    id: string;
-    receiverEmail: string;
-    senderEmail: string;
-    roomID: string;
-  }
-  
-  let users: IUser[] = [];
+
   
   /**
    * Elimina un usuario del array de usuarios conectados

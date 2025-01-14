@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { messageService } from "../services/messageService";
+/*
 
 export const sendMessage = async (req: Request, res: Response) => {
   try {
@@ -10,6 +11,18 @@ export const sendMessage = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+*/
+
+export const sendMessage = async (req: Request, res: Response) => {
+    try {
+      const { chatId, sender, content, receiver } = req.body;
+      const message = await messageService.sendMessage(chatId, sender, receiver, content);
+      return res.status(201).json(message);
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
+    }
+  };
+  
 
 export const getChatMessages = async (req: Request, res: Response) => {
   try {

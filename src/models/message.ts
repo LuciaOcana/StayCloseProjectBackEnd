@@ -3,11 +3,11 @@ import { Schema, model, Types, Document } from "mongoose";
 // Interfaz de Mensaje
 export interface IMessage extends Document {
   sender: Types.ObjectId; // ID del usuario que envió el mensaje
-  receiver?: Types.ObjectId; // ID del usuario que recibe el mensaje (opcional para chats grupales)
+  receiver: Types.ObjectId; // ID del usuario que recibe el mensaje (opcional para chats grupales)
   content: string; // Contenido del mensaje
   timestamp: Date; // Fecha y hora del mensaje
   chat: Types.ObjectId; // Referencia al chat al que pertenece el mensaje
-  roomID?:string;
+  roomID:string;
 }
 
 // Esquema de Mensaje

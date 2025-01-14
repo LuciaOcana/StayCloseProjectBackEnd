@@ -10,6 +10,7 @@ import { Server as SocketIOServer } from 'socket.io'
 import { createServer } from 'http'
 import setupSocketIO from "./utils/socket";
 import socketioRoutes from "./routes/socketioRoutes";
+import messageRouter from "./routes/messageRoutes";
 //import './types/express'
 
 const app = express()
@@ -42,6 +43,7 @@ app.use('/api/events', eventRouter)
 app.use('/api/ubi', ubiRouter)
 app.use('/api/chat', chatRouter)
 app.use("/api", socketioRoutes);
+app.use("/api/message", messageRouter);
 
 /* app.listen(PORT, () => {
     console.log('el servidor esta escuchando en el puerto '+ PORT)

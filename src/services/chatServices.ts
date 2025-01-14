@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { ChatModel } from "../models/chat";
 
+
 export const chatService = {
   // Crear un nuevo chat
   createChat: async (participants: string[]) => {
