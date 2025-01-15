@@ -6,6 +6,9 @@ import { ubifDB } from "../models/ubi";
 // Configuración del servicio de geocodificación
 const geoOptions = {
     provider: "openstreetmap", // Cambiar a Google u otro proveedor si es necesario
+    httpAdapter: "https", 
+    apiKey: process.env.GOOGLE_MAPS_API_KEY, // Solo necesario si usas Google
+    formatter: null,
 };
 const geoCoder = geocoder(geoOptions);
 
@@ -28,10 +31,15 @@ export const getEntries = {
             const geoResult = await geoCoder.geocode(entry.address);
 
             if (!geoResult || geoResult.length === 0) {
-                throw new Error("No se pudieron obtener coordenadas para la dirección proporcionada.");
+                throw new Error(`No se encontraron coordenadas para la dirección: ${entry.address}`);
             }
 
-            const { latitude, longitude } = geoResult[0];
+            const { latitude, longitude, formattedAddress } = geoResult[0];
+
+            // Verificar si la dirección devuelta es precisa
+            if (!formattedAddress.includes(entry.address.split(",")[0])) {
+                console.warn(`La dirección encontrada (${formattedAddress}) no coincide exactamente con la ingresada (${entry.address}).`);
+            }
 
             // Crear el objeto con coordenadas incluidas
             const locationData = {
