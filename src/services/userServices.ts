@@ -40,6 +40,9 @@ export const getEntries = {
     findUserByUsername: async(username:string) =>{
         return await userofDB.findOne({username: username})
     },
+    findUserByEmail: async(email:string) =>{
+        return await userofDB.findOne({email: email})
+    },
     countTotalUsers: async ()=>{
         const totalUsers = await userofDB.countDocuments(); // Esto cuenta todos los usuarios en la colección
       return totalUsers;

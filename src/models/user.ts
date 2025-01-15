@@ -19,9 +19,17 @@ export type newUserInfo = Omit<userInterface,'id' | 'isEnabled'>
 export type login = Pick<userInterface, 'username' | 'password' >
 
 export const userSchema = new Schema<userInterface>({
-    username: { type: String, required: true },
+    username: { 
+        type: String, 
+        required: true, 
+        unique: true // Asegura que el nombre de usuario sea único
+    },
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { 
+        type: String, 
+        required: true, 
+        unique: true // Asegura que el correo electrónico sea único
+    },
     password: { type: String, required: true },
     actualUbication: [],
     inHome: { type: Boolean, default: false},

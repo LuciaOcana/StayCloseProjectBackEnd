@@ -4,6 +4,7 @@ import * as userServices from "../services/userServices";
 import { login, userInterface } from "../models/user";
 import { paginatorInterface } from "../interfaces/paginator";
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 export async function getUsers(req: Request, res: Response): Promise<Response> {
    try {
@@ -26,9 +27,39 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
     return res.status(500).json({ error:'Failes to get users'});
    }
 }
-import bcrypt from 'bcrypt';
+
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
+    try {
+        const { username, name, email, password, admin, avatar, home } = req.body as userInterface;
+
+        // Verificar si el nombre de usuario ya existe
+        const existingUserByUsername = await userServices.getEntries.findByUsername(username);
+        if (existingUserByUsername) {
+            return res.status(301).json({ error: 'El nombre de usuario ya está en uso.' });
+        }
+
+        // Verificar si el correo electrónico ya existe
+        const existingUserByEmail = await userServices.getEntries.findUserByEmail(email);
+        if (existingUserByEmail) {
+            return res.status(302).json({ error: 'El correo electrónico ya está en uso.' });
+        }
+
+        // Hash the password
+        const saltRounds = 10;  // Define the salt rounds for hashing
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const newUser: Partial<userInterface> = { username, name, email, password: hashedPassword, admin, avatar, home };
+        const user = await userServices.getEntries.create(newUser);
+
+        return res.json(user);
+    } catch (error) {
+        console.error(error); // Opcional: log para ver el error en consola
+        return res.status(500).json({ error: 'Failed to create user' });
+    }
+}
+
+/*export async function createUser(req: Request, res: Response): Promise<Response> {
     try {
         const { username, name, email, password, admin, avatar, home } = req.body as userInterface;
 
@@ -43,7 +74,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
     } catch (error) {
         return res.status(500).json({ error: 'Failed to create user' });
     }
-}
+}*/
 
 /*export async function createUser(req: Request, res: Response): Promise<Response> {
     try {
