@@ -5,6 +5,8 @@ import { ChatModel } from "../models/chat";
 
 
 
+
+
 // Lista de usuarios conectados
 export let connectedUsers: ConnectedUser[] = [];
 
@@ -27,8 +29,6 @@ const addConnectedUser = (username: string, socketId: string, io:Server): void =
 
 
 };
-
-
   
 
 /*** Elimina un usuario de la lista de conectados.*/
@@ -102,14 +102,6 @@ export default function setupSocketIO(io: Server) {
       
       
 
-    // Evento: Unirse a un chat
-    /*
-    socket.on("joinChat", (chatId: string) => {
-      socket.join(chatId);
-      console.log(`Usuario ${socket.id} se unió al chat ${chatId}`);
-    });
-    */
-
      // Evento: Unirse a un chat
      socket.on("joinChat", async (chatId: string) => {
         try {
@@ -145,9 +137,11 @@ export default function setupSocketIO(io: Server) {
         }
       });
       */
+     /*
       socket.on("sendMessage", async ({ chatId, sender, receiver, content }) => {
+        console.log(`[INFO] Mensaje recibido del cliente: ${content}`);
         try {
-          const chat = await ChatModel.findById(chatId);
+          const chat = await ChatModel.findById(new Types.ObjectId(chatId));
           if (!chat) {
             console.error(`Chat ${chatId} no encontrado.`);
             socket.emit("error", { message: "Chat no encontrado" });
@@ -175,6 +169,50 @@ export default function setupSocketIO(io: Server) {
           console.error("Error al enviar mensaje:", error);
         }
       });
+
+      */
+      socket.on("sendMessage", async ({ chatId, sender, receiver, content }) => {
+        console.log(`[INFO] Mensaje recibido del cliente: ${content}`);
+        try {
+          // Buscar el ObjectId del remitente (sender)
+          const senderUser = await userofDB.findOne({ username: sender });
+          if (!senderUser) {
+            console.error(`Usuario remitente ${sender} no encontrado.`);
+            socket.emit("error", { message: "Usuario remitente no encontrado." });
+            return;
+          }
+      
+          // Buscar el ObjectId del receptor (receiver)
+          const receiverUser = await userofDB.findOne({ username: receiver });
+          if (!receiverUser) {
+            console.error(`Usuario receptor ${receiver} no encontrado.`);
+            socket.emit("error", { message: "Usuario receptor no encontrado." });
+            return;
+          }
+      
+          // Crear el mensaje
+          const message = await MessageModel.create({
+            chat: chatId,
+            sender: senderUser._id, // ObjectId del remitente
+            receiver: receiverUser._id, // ObjectId del receptor
+            content: content,
+            timestamp: new Date(),
+          });
+      
+          console.log(`[SUCCESS] Mensaje enviado: ${message}`);
+      
+          // Emitir el mensaje al receptor si está conectado
+          const receiverSocket = getUserByUsername(receiver)?.socketId;
+          if (receiverSocket) {
+            io.to(receiverSocket).emit("receiveMessage", message);
+          }
+        } catch (error) {
+          console.error(`[ERROR] Error al enviar mensaje: ${error}`);
+          socket.emit("error", { message: "Error al enviar mensaje." });
+        }
+      });
+      
+
     
       
       socket.on(
@@ -187,19 +225,40 @@ export default function setupSocketIO(io: Server) {
           senderUsername: string;
         }) => {
           try {
+            console.log(
+              `[INFO] Buscando chat único entre ${senderUsername} y ${receiverUsername}`
+            );
+      
+            // Buscar usuarios en la base de datos
+            const sender = await userofDB.findOne({ username: senderUsername });
+            const receiver = await userofDB.findOne({ username: receiverUsername });
+      
+            if (!sender || !receiver) {
+              socket.emit("error", { message: "Uno o ambos usuarios no existen." });
+              return;
+            }
+      
+            // Verificar si existe un chat previo
             const existingChat = await ChatModel.findOne({
-              participants: { $all: [receiverUsername, senderUsername] },
+              participants: { $all: [sender._id, receiver._id] },
             });
       
             if (existingChat) {
-              socket.emit("openChat", existingChat);
+              console.log(`[SUCCESS] Chat existente encontrado: ${existingChat._id}`);
+              socket.emit("openChat", { chatId: existingChat._id });
             } else {
+              // Crear un nuevo chat
+              console.log(
+                `[INFO] Creando nuevo chat entre ${senderUsername} y ${receiverUsername}`
+              );
+      
               const newChat = await ChatModel.create({
-                participants: [receiverUsername, senderUsername],
+                participants: [sender._id, receiver._id],
                 messages: [],
               });
       
-              socket.emit("openChat", newChat);
+              console.log(`[SUCCESS] Nuevo chat creado: ${newChat._id}`);
+              socket.emit("openChat", { chatId: newChat._id });
             }
           } catch (error) {
             console.error("Error al iniciar chat único:", error);
@@ -208,11 +267,13 @@ export default function setupSocketIO(io: Server) {
         }
       );
       
+      
 
     // Evento: Cargar mensajes previos de un chat
     socket.on("loadMessages", async ({ chatId }: { chatId: string }) => {
       try {
         const messages = await MessageModel.find({ chat: chatId })
+          .sort({timeStamp: 1}) ///orden ascendente
           .populate("sender", "username")
           .populate("receiver", "username");
         socket.emit("messagesLoaded", messages);
