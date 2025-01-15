@@ -1,98 +1,16 @@
-[
-    {
-        "username": "laura8",
-        "name": "Laura Fernandez Garcia",
-        "email": "laurafernandez@gmail.com",
-        "password": "123456",
-        "actualUbication": [],
-        "inHome": false
+{
+    "_id": {
+      "$oid": "67879bdcde5cf9c3b4257b8c"
     },
-    {
-       "username": "lidon18",
-        "name": "Lidon Garcia Campos",
-        "email": "lidongarcia@gmail.com",
-        "password": "67890",
-        "actualUbication": [],
-        "inHome": false 
-    },
-    {
-        "username": "lucia",
-        "name": "Lucia Ocana",
-        "email": "luciaor1909@gmail.com",
-        "password": "123456",
-        "actualUbication": [],
-        "inHome": false
-    },
-    {
-       "username": "Mayra",
-        "name": "Mayra Paola Sánchez",
-        "email": "mayra@gmail.com",
-        "password": "67890",
-        "actualUbication": [],
-        "inHome": false 
-    },
-    {
-        "username": "CarlaO",
-        "name": "Carla Otero",
-        "email": "carlao@gmail.com",
-        "password": "123456",
-        "actualUbication": [],
-        "inHome": false
-    },
-    {
-       "username": "CarlaA",
-        "name": "Carla Abascal",
-        "email": "carlaA@gmail.com",
-        "password": "67890",
-        "actualUbication": [],
-        "inHome": false 
-    },
-    {
-        "username": "laura8",
-        "name": "Laura Fernandez Garcia",
-        "email": "laurafernandez@gmail.com",
-        "password": "123456",
-        "actualUbication": [],
-        "inHome": false
-    },
-    {
-       "username": "lidon18",
-        "name": "Lidon Garcia Campos",
-        "email": "lidongarcia@gmail.com",
-        "password": "67890",
-        "actualUbication": [],
-        "inHome": false 
-    },
-    {
-        "username": "laura8",
-        "name": "Laura Fernandez Garcia",
-        "email": "laurafernandez@gmail.com",
-        "password": "123456",
-        "actualUbication": [],
-        "inHome": false
-    },
-    {
-       "username": "lidon18",
-        "name": "Lidon Garcia Campos",
-        "email": "lidongarcia@gmail.com",
-        "password": "67890",
-        "actualUbication": [],
-        "inHome": false 
-    },
-    {
-        "username": "laura8",
-        "name": "Laura Fernandez Garcia",
-        "email": "laurafernandez@gmail.com",
-        "password": "123456",
-        "actualUbication": [],
-        "inHome": false
-    },
-    {
-       "username": "lidon18",
-        "name": "Lidon Garcia Campos",
-        "email": "lidongarcia@gmail.com",
-        "password": "67890",
-        "actualUbication": [],
-        "inHome": false 
-    }
-]
+    "username": "anna8",
+    "name": "Anna Fernandez Garcia",
+    "email": "anna8@gmail.com",
+    "password": "$2b$10$xShEDTS0TPQj3Y9Xv5h0Q.ZZiDx2izevBgOR/iBUoB22gDc05yAJW",
+    "actualUbication": [],
+    "inHome": false,
+    "admin": true,
+    "disabled": false,
+    "__v": 0,
+    "avatar": "https://res.cloudinary.com/djen7vqby/image/upload/v1736949203/bri4p47fuhmyed7ejyvs.png",
+    "home": "Carrer 24"
+  }

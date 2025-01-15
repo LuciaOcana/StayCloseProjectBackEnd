@@ -26,8 +26,26 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
     return res.status(500).json({ error:'Failes to get users'});
    }
 }
+import bcrypt from 'bcrypt';
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
+    try {
+        const { username, name, email, password, admin, avatar, home } = req.body as userInterface;
+
+        // Hash the password
+        const saltRounds = 10;  // Define the salt rounds for hashing
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const newUser: Partial<userInterface> = { username, name, email, password: hashedPassword, admin, avatar, home};
+        const user = await userServices.getEntries.create(newUser);
+
+        return res.json(user);
+    } catch (error) {
+        return res.status(500).json({ error: 'Failed to create user' });
+    }
+}
+
+/*export async function createUser(req: Request, res: Response): Promise<Response> {
     try {
         const { username, name, email, password, admin } = req.body as userInterface;
         //console.log('creating user');
@@ -40,7 +58,7 @@ export async function createUser(req: Request, res: Response): Promise<Response>
     } catch (error) {
         return res.status(500).json({ error: 'Failed to create user' });
     }
-}
+}*/
 
 export async function getUser(req: Request, res: Response): Promise<Response> {
     try {
@@ -109,7 +127,7 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
         return res.status(500).json({ error: 'Failed to get user' });
     }
 }
-export async function login(req: Request, res: Response): Promise<Response> {
+/*export async function login(req: Request, res: Response): Promise<Response> {
     try{
         console.log('logging user...')
         const {username, password} = req.body;
@@ -135,6 +153,35 @@ export async function login(req: Request, res: Response): Promise<Response> {
         }
         return res.status(400).json({ error: 'Incorrect password'})
     } catch(error) {
+        return res.status(500).json({ error: 'Failed to get user' });
+    }
+}*/
+export async function login(req: Request, res: Response): Promise<Response> {
+    try {
+        const { username, password } = req.body;
+        const loggedUser = await userServices.getEntries.findUserByUsername(username);
+
+        if (!loggedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Compare the provided password with the hashed password
+        const passwordMatch = await bcrypt.compare(password, loggedUser.password);
+        if (!passwordMatch) {
+            return res.status(400).json({ error: 'Incorrect password' });
+        }
+
+        if (!loggedUser.admin) {
+            return res.status(400).json({ error: 'You are not an Admin' });
+        }
+
+        const token: string = jwt.sign(
+            { id: loggedUser.id, username: loggedUser.username, email: loggedUser.email, admin: loggedUser.admin },
+            process.env.SECRET || 'token'
+        );
+
+        return res.json({ message: 'user logged in', token });
+    } catch (error) {
         return res.status(500).json({ error: 'Failed to get user' });
     }
 }
