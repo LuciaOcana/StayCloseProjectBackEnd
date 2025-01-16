@@ -1,4 +1,3 @@
-// ubiController.ts
 import { Request, Response } from 'express';
 import * as ubiServices from '../services/ubiServices';
 
@@ -32,16 +31,16 @@ export async function findById(req: Request, res: Response): Promise<void> {
 // Crear una nueva ubicación
 export async function create(req: Request, res: Response): Promise<void> {
     try {
-        const { name, horari, tipo, address, comentari } = req.body;
+        const { name, horari, tipo, address, comentari, ubication } = req.body;
 
         // Verificar que los campos obligatorios estén presentes
-        if (!name || !horari || !tipo || !address || !comentari) {
-            res.status(400).json({ message: 'Faltan datos obligatorios' });
+        if (!name || !horari || !tipo || !address || !comentari || !ubication || !ubication.coordinates || ubication.coordinates.length !== 2) {
+            res.status(400).json({ message: 'Faltan datos obligatorios o las coordenadas son incorrectas' });
             return;
         }
 
-        // Crear la ubicación con geocodificación incluida
-        const newUbi = await ubiServices.getEntries.create({ name, horari, tipo, address, comentari });
+        // Crear la ubicación sin geocodificación (las coordenadas vienen del frontend)
+        const newUbi = await ubiServices.getEntries.create({ name, horari, tipo, address, comentari, ubication });
         res.status(201).json(newUbi);
     } catch (error) {
         console.error('Error al crear una ubicación:', error);
@@ -84,6 +83,8 @@ export async function deleteEntry(req: Request, res: Response): Promise<void> {
 // Buscar ubicaciones cercanas
 export async function findNearby(req: Request, res: Response): Promise<void> {
     const { lat, lon, distance } = req.params;
+
+    // Verificar que todos los parámetros necesarios estén presentes
     if (!lat || !lon || !distance) {
         res.status(400).json({ message: "Faltan parámetros" });
         return;
@@ -101,4 +102,3 @@ export async function findNearby(req: Request, res: Response): Promise<void> {
         res.status(500).json({ message: 'Error al buscar ubicaciones cercanas' });
     }
 }
-
