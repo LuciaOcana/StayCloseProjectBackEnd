@@ -22,7 +22,7 @@ router.get("/getUser/:id", TokenValidation, AdminValidation, getUser);
 //router.get("/getUserUsername/:username", getUserUsername);
 
 //Ruta per actialitzar usuari per id
-router.put("/update/:id", TokenValidation, AdminValidation, updateUser);
+router.put("/update/:id/:encryptedPassword", TokenValidation, AdminValidation, updateUser);
 
 //Ruta per eliminar user per id
 router.delete("/:id", TokenValidation, AdminValidation, deleteUser);

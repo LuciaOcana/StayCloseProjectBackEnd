@@ -59,37 +59,6 @@ export async function createUser(req: Request, res: Response): Promise<Response>
     }
 }
 
-/*export async function createUser(req: Request, res: Response): Promise<Response> {
-    try {
-        const { username, name, email, password, admin, avatar, home } = req.body as userInterface;
-
-        // Hash the password
-        const saltRounds = 10;  // Define the salt rounds for hashing
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        const newUser: Partial<userInterface> = { username, name, email, password: hashedPassword, admin, avatar, home};
-        const user = await userServices.getEntries.create(newUser);
-
-        return res.json(user);
-    } catch (error) {
-        return res.status(500).json({ error: 'Failed to create user' });
-    }
-}*/
-
-/*export async function createUser(req: Request, res: Response): Promise<Response> {
-    try {
-        const { username, name, email, password, admin } = req.body as userInterface;
-        //console.log('creating user');
-
-        const newUser: Partial<userInterface> = { username, name, email, password, admin};
-        const user = await userServices.getEntries.create(newUser);
-        console.log('hi', user);
-
-        return res.json(user);
-    } catch (error) {
-        return res.status(500).json({ error: 'Failed to create user' });
-    }
-}*/
 
 export async function getUser(req: Request, res: Response): Promise<Response> {
     try {
@@ -106,39 +75,35 @@ export async function getUser(req: Request, res: Response): Promise<Response> {
         return res.status(500).json({ error: 'Failed to get user' });
     }
 }
-/*export async function getUserUsername(req: Request, res: Response): Promise<Response> {
-    try {
-        console.log('Get user by username');
-        const username = req.params.username; // Obtener el parámetro 'username' de la URL
 
-        // Aquí se busca al usuario por el username
-        const user = await userServices.getEntries.findByUsername(username);
-
-        if (!user) {
-            return res.status(404).json({ error: `User with username ${username} not found` });
-        }
-        return res.json(user);
-    } catch (error) {
-        console.error("Error getting user by username:", error);
-        return res.status(500).json({ error: 'Failed to get user' });
-    }
-}*/
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
     try{
         console.log('Update user');
         const id = req.params.id;
-        const { username, name, email, password, avatar, home } = req.body as userInterface;
-        const updatedUser: Partial<userInterface> = { username, name, email, password, avatar, home };
-        const user = await userServices.getEntries.updateUserById(id, updatedUser);
-
-        if(!user) {
-            return res.status(404).json({ error: `User with id ${id} not found` });
+        const encryptedPassword = req.params.encryptedPassword;
+        const userValidation = await userServices.getEntries.findById(id);
+        console.log(userValidation);
+        if(userValidation != null){
+            // Compare the provided password with the hashed password
+            const passwordMatch = await bcrypt.compare(encryptedPassword, userValidation.password);
+            console.log(passwordMatch);
+            if (!passwordMatch) {
+                return res.status(400).json({ error: 'Incorrect password' });
+            }
+            else{
+                const { username, name, email, password, avatar, home } = req.body as userInterface;
+                const updatedUser: Partial<userInterface> = { username, name, email, password, avatar, home };
+                const user = await userServices.getEntries.updateUserById(id, updatedUser);
+                if(!user) {
+                    return res.status(404).json({ error: `User with id ${id} not found` });
+                }
+                return res.status(200).json('User updated');
+            }
         }
-        return res.json({
-            message: "User updated",
-            user
-        });
+        else{
+            return res.status(404).json({ error: 'No password provided' });
+        }  
     } catch (error) {
         return res.status(500).json({ error: 'Failed to update user' });
     }
@@ -158,35 +123,7 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
         return res.status(500).json({ error: 'Failed to get user' });
     }
 }
-/*export async function login(req: Request, res: Response): Promise<Response> {
-    try{
-        console.log('logging user...')
-        const {username, password} = req.body;
-        const login = {username, password};
-        const loggedUser = await userServices.getEntries.findUserByUsername(login.username);
-        console.log(loggedUser);
-        if(!loggedUser){
-            return res.status(404).json({ error: 'User not found'})
-        } 
-        if(login.password == loggedUser.password){
-            console.log('checking admin')
-            if(loggedUser.admin != true){
-                return res.status(400).json({ error: 'You are not an Admin'})
-            }
-            console.log('creem token');
-            const user = await userServices.getEntries.findUserByUsername(username);
-            const id = user?.id;
-            const email = user?.email;
-            //console.log("este es el id del usuario loggeado:", id);
-            //Creem token
-            const token: string = jwt.sign({id: id, username: username, email: email, admin: loggedUser.admin}, process.env.SECRET || 'token');
-            return res.json({ message: 'user logged in', token: token });
-        }
-        return res.status(400).json({ error: 'Incorrect password'})
-    } catch(error) {
-        return res.status(500).json({ error: 'Failed to get user' });
-    }
-}*/
+
 export async function login(req: Request, res: Response): Promise<Response> {
     try {
         const { username, password } = req.body;
