@@ -128,6 +128,8 @@ export async function login(req: Request, res: Response): Promise<Response> {
     try {
         const { username, password } = req.body;
         const loggedUser = await userServices.getEntries.findUserByUsername(username);
+        
+      
 
         if (!loggedUser) {
             return res.status(404).json({ error: 'User not found' });
@@ -142,11 +144,15 @@ export async function login(req: Request, res: Response): Promise<Response> {
         if (!loggedUser.admin) {
             return res.status(400).json({ error: 'You are not an Admin' });
         }
+        if (loggedUser.disabled==true){
+            return res.status(400).json({ error: 'Usuario no habilitado' });
+        }
 
         const token: string = jwt.sign(
             { id: loggedUser.id, username: loggedUser.username, email: loggedUser.email, admin: loggedUser.admin },
             process.env.SECRET || 'token'
         );
+        
 
         return res.json({ message: 'user logged in', token });
     } catch (error) {
