@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAll, findById, create, update, deleteEntry, findNearby } from '../controllers/ubiController';
+import { getAll, findById, create, update, deleteEntry, findNearby, getUbiByType } from '../controllers/ubiController';
 
 
 const ubiRouter = express.Router();
@@ -21,5 +21,8 @@ ubiRouter.delete("/:id", deleteEntry);
 
 // Ruta para encontrar los puntos cercanos
 ubiRouter.get("/nearby/:lon/:lat/:distance", findNearby);
+
+//Ruta per obtenir posts per categoria de post
+ubiRouter.get("/type/:type", getUbiByType);
 
 export default ubiRouter; 
