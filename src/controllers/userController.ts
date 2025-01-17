@@ -214,6 +214,7 @@ export async function enableUser (req:Request, res: Response): Promise<Response>
 //Habilitar usuario funcion 
 export async function disableUser (req: Request, res: Response): Promise<Response> {
     try {
+        console.log('desabling user ...');
         const id = req.params.id; // Obtener el ID del usuario 
         //const user = await userServices.getEntries.updateUserById (id, { disabled: true });
         const user = await userServices.getEntries.disable(id);
