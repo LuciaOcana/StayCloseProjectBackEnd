@@ -5,7 +5,7 @@ import {getPosts, createPost, updatePost, deletePost, getPost, getAuthorPosts, g
 const postRouter = express.Router();
 
 // Ruta para obtener todos los post
-postRouter.get("/", getPosts);
+postRouter.get("/getPosts/:page/:limit", getPosts);
 
 // Ruta per crear post
 postRouter.post("/", createPost);
