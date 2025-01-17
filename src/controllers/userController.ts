@@ -216,3 +216,22 @@ export async function disableUser (req: Request, res: Response): Promise<Respons
 export async function PingPong(_req: Request, res: Response): Promise<Response> {
     return res.status(200).json({ message: "pong" });
 }
+
+export async function getUserByUsername(req: Request, res: Response): Promise<Response> {
+    try {
+        console.log('Get user by username');
+        const username = req.params.username; // Obtener el parámetro 'username' de la URL
+
+        // Aquí se busca al usuario por el username
+        const user = await userServices.getEntries.findByUsername(username);
+
+        if (!user) {
+            return res.status(404).json({ error: `Usuario con username ${username} no encontrado` });
+        }
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error("Error obteniendo usuario por username:", error);
+        return res.status(500).json({ error: 'No se pudo obtener el usuario' });
+    }
+}
+
