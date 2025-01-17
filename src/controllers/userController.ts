@@ -145,7 +145,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
             return res.status(400).json({ error: 'You are not an Admin' });
         }
         if (loggedUser.disabled==true){
-            return res.status(400).json({ error: 'Usuario no habilitado' });
+            return res.status(300).json({ error: 'Usuario no habilitado' });
         }
 
         const token: string = jwt.sign(
