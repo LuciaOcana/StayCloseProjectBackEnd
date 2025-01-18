@@ -1,4 +1,4 @@
-import { Server, Socket } from "socket.io";
+/*import { Server, Socket } from "socket.io";
 import { MessageModel } from "../models/message";
 import { userofDB, ConnectedUser} from "../models/user";
 import { ChatModel } from "../models/chat";
@@ -13,7 +13,7 @@ export let connectedUsers: ConnectedUser[] = [];
 
 // ====================== FUNCIONES AUXILIARES ======================
 
-/*** Añade un usuario conectado a la lista.*/
+/*** Añade un usuario conectado a la lista.
 
 const addConnectedUser = (username: string, socketId: string, io:Server): void => {
   const existingUser = connectedUsers.find((user) => user.username === username);
@@ -31,7 +31,7 @@ const addConnectedUser = (username: string, socketId: string, io:Server): void =
 };
   
 
-/*** Elimina un usuario de la lista de conectados.*/
+/*** Elimina un usuario de la lista de conectados.
 
 const removeConnectedUser = ( socketId: string, io: Server): void => {
     connectedUsers = connectedUsers.filter((user) => user.socketId !== socketId);
@@ -43,7 +43,7 @@ const removeConnectedUser = ( socketId: string, io: Server): void => {
 
 /**
  * Obtiene un usuario conectado por su nombre de usuario.
- */
+ 
 
 const getUserByUsername = (username: string): ConnectedUser | undefined => {
   return connectedUsers.find((user) => user.username === username);
@@ -66,13 +66,13 @@ const getUserByEmail = (email: string) =>
 
 /**
  * Configuración del socket.io
- */
+ 
 export default function setupSocketIO(io: Server) {
   io.on("connection", (socket: Socket) => {
     console.log("Nuevo cliente conectado:", socket.id);
 
     /* Evento: Obtener lista de usuarios conectados
-    */
+    
    socket.on("getConnectedUsers", () => {
     socket.emit("connectedUsers", connectedUsers.map(({ username }) => ({ username })));
    });
@@ -170,7 +170,7 @@ export default function setupSocketIO(io: Server) {
         }
       });
 
-      */
+      
       socket.on("sendMessage", async ({ chatId, sender, receiver, content }) => {
         console.log(`[INFO] Mensaje recibido del cliente: ${content}`);
         try {
@@ -298,3 +298,5 @@ export default function setupSocketIO(io: Server) {
     });
   });
 }
+
+*/

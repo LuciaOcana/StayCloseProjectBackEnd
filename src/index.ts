@@ -8,7 +8,6 @@ import chatRouter from './routes/chatRoutes'
 import { run } from './database/databaseConection'
 import { Server as SocketIOServer } from 'socket.io'
 import { createServer } from 'http'
-import setupSocketIO from "./utils/socket";
 import socketioRoutes from "./routes/socketioRoutes";
 import messageRouter from "./routes/messageRoutes";
 //import './types/express'
@@ -22,7 +21,7 @@ const io = new SocketIOServer(httpServer, {
     },
   });
 
-setupSocketIO(io);
+
 app.use(cors());
 app.use(express.json())
 run();
@@ -44,6 +43,34 @@ app.use('/api/ubi', ubiRouter)
 app.use('/api/chat', chatRouter)
 app.use("/api", socketioRoutes);
 app.use("/api/message", messageRouter);
+
+//socket
+
+app.set("socketio", io);
+//setupSocketIO(io);
+app.use(cors());
+app.use(express.json())
+run();
+app.use(express.json() as RequestHandler);
+
+//Conexion con socketIO
+io.on("connection", (socket) => {
+  console.log("Usuario conectado:", socket.id);
+
+  socket.on("joinChat", (chatId) => {
+    socket.join(chatId); // Unir al usuario al chat correspondiente
+    console.log(`Usuario ${socket.id} se unió al chat: ${chatId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Usuario desconectado:", socket.id);
+  });
+});
+
+
+
+
+
 
 /* app.listen(PORT, () => {
     console.log('el servidor esta escuchando en el puerto '+ PORT)
