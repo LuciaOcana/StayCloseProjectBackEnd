@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol, disableUser, enableUser, PingPong, getUserByUsername } from '../controllers/userController';
+import { getUsers, createUser, getUser, updateUser, deleteUser, login, checkUsername, changeRol, disableUser, enableUser, PingPong, getUserByUsername, getHome } from '../controllers/userController';
 import { TokenValidation } from '../middlewares/verifyJWT';
 //import { verifyOwnership } from '../middlewares/verifyOwner';
 import { AdminValidation } from '../middlewares/verifyAdmin';
@@ -44,6 +44,10 @@ router.patch("/disable/:id", TokenValidation, AdminValidation, disableUser);
 
 // Ruta para obtener usuario por username
 router.get("/getUserByUsername/:username", getUserByUsername);
+
+//Ruta per saber la dirreció de casa del usuari passant el id
+router.get("/home/:username", TokenValidation, AdminValidation, getHome);
+
 
 export default router 
 
