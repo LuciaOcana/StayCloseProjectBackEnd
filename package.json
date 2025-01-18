@@ -14,6 +14,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@eslint/js": "^9.18.0",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",
@@ -24,13 +25,18 @@
     "@types/node-geocoder": "^4.2.6",
     "@types/socket.io": "^3.0.1",
     "@types/uuid": "^10.0.0",
+    "eslint": "^8.57.1",
+    "globals": "^15.14.0",
     "nodemon": "^3.1.9",
     "ts-node-dev": "^2.0.0",
     "ts-standard": "^12.0.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
   },
   "dependencies": {
     "@typegoose/typegoose": "^12.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",

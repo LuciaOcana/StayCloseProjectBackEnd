@@ -11,7 +11,10 @@ export async function getPosts(req: Request, res: Response): Promise<Response> {
         console.log(page, limit);
         const posts = await postServices.getEntries.getPaginated(page, limit);
         return res.json(posts);
-    } catch (error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ error: error.message });
+        }
         return res.status(500).json({ error: 'Failed to get posts' });
     }
 }
@@ -21,13 +24,11 @@ export async function createPost(req: Request, res: Response): Promise<Response>
     try {
         const { author, postType, content, image, postDate } = req.body as postInterface;
 
-        // Comprobar si el usuario existe
         const userExists = await postServices.getEntries.checkIfUserExists(author);
         if (!userExists) {
             return res.status(400).json({ error: "User does not exist" });
         }
 
-        // Crear un nuevo objeto de post
         const newPost: postInterface = {
             author,
             postType,
@@ -36,13 +37,15 @@ export async function createPost(req: Request, res: Response): Promise<Response>
             postDate: postDate ? new Date(postDate) : new Date(),
         };
 
-        // Usar el servicio para crear el post
         const post = await postServices.getEntries.create(newPost);
         return res.json({
             message: "Post created",
             post
         });
-    } catch (error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ error: error.message });
+        }
         return res.status(500).json({ error: 'Failed to create post' });
     }
 }
@@ -62,7 +65,10 @@ export async function updatePost(req: Request, res: Response): Promise<Response>
             message: "Post updated",
             post
         });
-    } catch (error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ error: error.message });
+        }
         return res.status(500).json({ error: 'Failed to update post' });
     }
 }
@@ -77,7 +83,10 @@ export async function deletePost(req: Request, res: Response): Promise<Response>
             return res.status(404).json({ error: `Post with id ${id} not found` });
         }
         return res.json(post);
-    } catch (error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ error: error.message });
+        }
         return res.status(500).json({ error: 'Failed to delete post' });
     }
 }
@@ -92,7 +101,10 @@ export async function getPost(req: Request, res: Response): Promise<Response> {
             return res.status(404).json({ error: `Post with id ${id} not found` });
         }
         return res.json(post);
-    } catch (error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ error: error.message });
+        }
         return res.status(500).json({ error: 'Failed to get post' });
     }
 }
@@ -107,7 +119,10 @@ export async function getAuthorPosts(req: Request, res: Response): Promise<Respo
             return res.status(404).json({ error: `User with id ${idAuthor} not found` });
         }
         return res.json(posts);
-    } catch (error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ error: error.message });
+        }
         return res.status(500).json({ error: 'Failed to get posts by author' });
     }
 }
@@ -122,10 +137,12 @@ export async function getPostByType(req: Request, res: Response): Promise<Respon
             return res.status(404).json({ error: `Posts with type ${type} not found` });
         }
         return res.json(posts);
-    } catch (error) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return res.status(500).json({ error: error.message });
+        }
         return res.status(500).json({ error: 'Failed to get posts by type' });
     }
 }
-
 
 
