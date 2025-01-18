@@ -128,7 +128,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
     try {
         const { username, password } = req.body;
         const loggedUser = await userServices.getEntries.findUserByUsername(username);
-        
+        console.log(loggedUser);
       
 
         if (!loggedUser) {
