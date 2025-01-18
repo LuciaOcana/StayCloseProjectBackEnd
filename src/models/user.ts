@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 
 export interface userInterface{
+
     username: string,
     name: string,
     email: string,
@@ -11,12 +12,22 @@ export interface userInterface{
     //isEnabled: boolean
     disabled:boolean,
     avatar: string,
-    home: string
+    home: string,
+   
 }
+
+// Interfaz para usuarios conectados
+export interface ConnectedUser {
+    username: string;
+    socketId: string;
+  }
+
 
 export type UsersInterfacePublicInfo = Pick<userInterface, 'username' | 'name' >
 export type newUserInfo = Omit<userInterface,'id' | 'isEnabled'>
 export type login = Pick<userInterface, 'username' | 'password' >
+
+
 
 export const userSchema = new Schema<userInterface>({
     username: { 

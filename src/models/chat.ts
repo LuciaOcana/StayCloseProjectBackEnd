@@ -1,17 +1,52 @@
-import { model,  Schema } from "mongoose";
 
-
-export interface chatInterface{
-    //chatID: string, *¿PONEMOS UNA ID NOSOTRAS O ESCOGEMOS LA QUE ASIGNA MONGO POR DEFECTO?* 
-    chatType: boolean,
-    participants: []
+/*
+// Interfaz de Chat
+export interface IChat extends Document {
+  participants: Types.ObjectId[]; // IDs de los usuarios que participan en el chat
+  createdAt: Date; // Fecha de creación del chat
+  messages: Types.ObjectId[]; 
 }
 
-export type newChatInfo = Omit<chatInterface,'id'>
+// Esquema de Chat
+const chatSchema = new Schema<IChat>({
+  participants: [{ type: Schema.Types.ObjectId, ref: "user", required: true }], // Usuarios en el chat
+  messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
+  createdAt: { type: Date, default: Date.now },
+});
 
-export const chatSchema = new Schema<chatInterface>({
-    chatType: { type: Boolean, required: true },
-    participants: [{ type: String }]
-})
+// Modelo de Chat
+export const ChatModel = model<IChat>("Chat", chatSchema);
 
-export const chatofDB = model<chatInterface>('chat',chatSchema)
+*/
+
+/*
+import { Schema, model, Document } from "mongoose";
+
+interface ChatInterface extends Document {
+  messages: string[];
+}
+
+const ChatSchema = new Schema<ChatInterface>({
+  messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
+});
+
+export const ChatModel = model<ChatInterface>("Chat", ChatSchema);
+*/
+
+import { Schema, model, Document } from "mongoose";
+
+interface ChatInterface extends Document {
+  participants: string[]; // Lista de nombres de usuario de los participantes
+  messages: string[];     // Lista de IDs de mensajes relacionados con el chat
+}
+
+const ChatSchema = new Schema<ChatInterface>({
+  participants: [
+    { type: String, required: true }, // Guardamos los nombres de usuario
+  ],
+  messages: [
+    { type: Schema.Types.ObjectId, ref: "Message" }, // Relación con los mensajes
+  ],
+});
+
+export const ChatModel = model<ChatInterface>("Chat", ChatSchema);
