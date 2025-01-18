@@ -16,6 +16,7 @@ export const createChat = async (req: Request, res: Response) => {
   }
 };
 
+/*
 export const getUserChats = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -28,6 +29,24 @@ export const getUserChats = async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Unexpected error' });
   }
 };
+*/
+
+export const getUserChats = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    // Busca los chats donde el usuario participa
+    const chats = await ChatModel.find({ participants: userId })
+      .populate("messages") // Incluye los mensajes (si necesitas)
+      .lean(); // Convierte los resultados en objetos JSON
+
+    return res.status(200).json(chats);
+  } catch (error) {
+    console.error("Error al obtener los chats del usuario:", error);
+    return res.status(500).json({ error: "No se pudieron obtener los chats." });
+  }
+};
+
 
 export const startChat = async (req: Request, res: Response) => {
   try {
@@ -85,6 +104,8 @@ export const createOrGetChat = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error al buscar o crear chat" });
   }
 };
+
+
 
 
 
