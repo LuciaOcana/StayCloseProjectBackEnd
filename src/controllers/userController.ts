@@ -174,6 +174,25 @@ export async function login(req: Request, res: Response): Promise<Response> {
     }
 }
 
+export async function getHome(req: Request, res: Response): Promise<Response> {
+    try {
+        console.log('Get home address');
+        const username = req.params.username;
+        console.log(username);
+        const user = await userServices.getEntries.findByUsername(username);
+        console.log(user);
+        if(!user) {
+            return res.status(404).json({ error: `User with id ${username} not found` });
+        }
+        return res.json(user.home);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error(error.message); // Usamos el mensaje del error para el log
+        }
+        return res.status(500).json({ error: 'Failed to get home addres' });
+    }
+}
+
 export async function checkUsername(req: Request, res: Response): Promise<Response> {
     try {
         const  username  = req.params.username;  // Tomamos el nombre de usuario del cuerpo de la solicitud
