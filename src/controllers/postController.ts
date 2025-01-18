@@ -126,3 +126,6 @@ export async function getPostByType(req: Request, res: Response): Promise<Respon
         return res.status(500).json({ error: 'Failed to get posts by type' });
     }
 }
+
+
+

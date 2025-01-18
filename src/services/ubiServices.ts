@@ -94,5 +94,16 @@ export const getEntries = {
             console.error("Error al buscar ubicaciones cercanas:", error);
             throw new Error("Error al buscar ubicaciones cercanas");
         }
+    },
+
+    // Obtener todas las ubis de una categoría específica
+    findbyUbiType: async (type: string) => {
+        try {
+            return await ubifDB.find({ tipo: type });
+        } catch (error) {
+            console.error(`Error al buscar ubicaciones del tipo ${type}:`, error);
+            throw new Error("Error al buscar ubicaciones por tipo");
+        }
     }
+
 };

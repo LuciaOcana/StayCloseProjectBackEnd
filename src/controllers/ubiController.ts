@@ -102,3 +102,18 @@ export async function findNearby(req: Request, res: Response): Promise<void> {
         res.status(500).json({ message: 'Error al buscar ubicaciones cercanas' });
     }
 }
+    // Obtener ubis por tipo 
+    export async function getUbiByType(req: Request, res: Response): Promise<Response> {
+        try {
+            console.log('Get ubi by type');
+            const type = req.params.type;
+            const ubis = await ubiServices.getEntries.findbyUbiType(type);
+    
+            if (!ubis) {
+                return res.status(404).json({ error: `Ubi with type ${type} not found` });
+            }
+            return res.json(ubis);
+        } catch (error) {
+            return res.status(500).json({ error: 'Failed to get ubis by type' });
+        }
+}
