@@ -8,8 +8,11 @@ export const createChat = async (req: Request, res: Response) => {
     const { participants } = req.body;
     const chat = await chatService.createChat(participants);
     return res.status(201).json(chat);
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.status(500).json({ error: 'Unexpected error' });
   }
 };
 
@@ -18,8 +21,11 @@ export const getUserChats = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const chats = await chatService.getUserChats(userId);
     return res.status(200).json(chats);
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return res.status(500).json({ error: error.message });
+    }
+    return res.status(500).json({ error: 'Unexpected error' });
   }
 };
 

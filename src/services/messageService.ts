@@ -125,8 +125,12 @@ export const messageService = {
 
       console.log("Mensaje guardado en la base de datos:", message);
       return message;
-    } catch (error: any) {
-      console.error("Error en el servicio sendMessage:", error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error en el servicio sendMessage:", error.message);
+      } else {
+        console.error("Error desconocido:", error);
+      }
       throw error;
     }
   },
@@ -144,8 +148,12 @@ export const messageService = {
 
       console.log("Mensajes obtenidos:", messages);
       return messages;
-    } catch (error: any) {
-      console.error("Error al obtener mensajes del chat:", error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error al obtener mensajes del chat:", error.message);
+      } else {
+        console.error("Error desconocido:", error);
+      }
       throw error;
     }
   },

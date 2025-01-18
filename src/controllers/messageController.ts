@@ -61,40 +61,36 @@ export const sendMessage = async (req: Request, res: Response): Promise<Response
   try {
     const { chatId, sender, receiver, content } = req.body;
 
-    // Validar que los campos requeridos estén presentes
     if (!chatId || !sender || !receiver || !content) {
-      console.error("[ERROR]Faltan datos en la solicitud:", { chatId, sender, receiver, content });
+      console.error("[ERROR] Faltan datos en la solicitud:", { chatId, sender, receiver, content });
       return res.status(400).json({ error: "Todos los campos son obligatorios." });
     }
-    console.log("[INFO]Datos recibidos para enviar el mensaje:", { chatId, sender, receiver, content });
+    console.log("[INFO] Datos recibidos para enviar el mensaje:", { chatId, sender, receiver, content });
 
-    // Llamar al servicio para guardar el mensaje
     const message = await messageService.sendMessage(chatId, sender, receiver, content);
-    console.log("[OK]Mensaje enviado exitosamente:", message);
+    console.log("[OK] Mensaje enviado exitosamente:", message);
     return res.status(201).json({
       message: "Mensaje enviado exitosamente.",
       data: message,
     });
-  } catch (error: any) {
-    console.error("Error al enviar el mensaje:", error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error al enviar el mensaje:", error.message);
+      return res.status(500).json({ error: error.message });
+    }
+    console.error("Error desconocido al enviar el mensaje:", error);
     return res.status(500).json({ error: "Error interno al enviar el mensaje." });
   }
 };
 
-/**
- * Controlador para obtener todos los mensajes de un chat.
- * Este método devuelve los mensajes ordenados por timestamp.
- */
 export const getChatMessages = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { chatId } = req.params;
 
-    // Validar que se haya proporcionado el chatId
     if (!chatId) {
       return res.status(400).json({ error: "El ID del chat es obligatorio." });
     }
 
-    // Llamar al servicio para obtener los mensajes
     const messages = await messageService.getChatMessages(chatId);
 
     if (!messages || messages.length === 0) {
@@ -102,8 +98,12 @@ export const getChatMessages = async (req: Request, res: Response): Promise<Resp
     }
 
     return res.status(200).json(messages);
-  } catch (error: any) {
-    console.error("Error al obtener los mensajes del chat:", error.message);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error al obtener los mensajes del chat:", error.message);
+      return res.status(500).json({ error: error.message });
+    }
+    console.error("Error desconocido al obtener los mensajes del chat:", error);
     return res.status(500).json({ error: "Error interno al obtener los mensajes del chat." });
   }
 };
