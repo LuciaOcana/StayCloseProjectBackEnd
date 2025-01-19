@@ -48,7 +48,27 @@ export const chatService = {
       throw new Error("Error al buscar o crear un chat.");
     }
   },
-  
 
+  createGroupChat: async (groupName: string, participants: string[]) => {
+    try {
+      if (participants.length < 2) {
+        throw new Error("Se necesitan al menos 2 participantes para crear un grupo.");
+      }
+
+      const chat = await ChatModel.create({
+        participants,
+        isGroupChat: true,
+        groupName,
+        messages: [],
+      });
+
+      console.log(`[INFO] Grupo creado con éxito: ${chat._id}`);
+      return chat;
+    } catch (error) {
+      console.error(`[ERROR] Error al crear el grupo: ${error}`);
+      throw error;
+    }
+  },
+ 
   
 };

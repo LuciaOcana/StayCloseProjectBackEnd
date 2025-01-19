@@ -10,7 +10,7 @@ interface MessageInterface extends Document {
 }
 const MessageSchema = new Schema<MessageInterface>({
   sender: { type: String, required: true },
-  receiver: { type: String, required: true },
+  receiver: { type: String, required: false },
   content: { type: String, required: true },
   chat: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },

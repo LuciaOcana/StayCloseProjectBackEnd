@@ -7,15 +7,24 @@ import { messageService } from "../services/messageService";
  * Controlador para enviar un mensaje.
  * Este método maneja la lógica de guardar el mensaje en la base de datos.
  */
-
 export const sendMessage = async (req: Request, res: Response) => {
   try {
     const { chatId, sender, receiver, content } = req.body;
 
     console.log(`[INFO] Datos recibidos para enviar el mensaje:`, req.body);
 
+    if (!chatId || !sender || !content) {
+      return res.status(400).json({ error: "Datos insuficientes." });
+    }
+    
+
     // Guardar el mensaje en la base de datos
-    const message = await messageService.sendMessage(chatId, sender, receiver, content);
+    const message = await messageService.sendMessage(
+      chatId,
+      sender,
+      receiver || null,
+      content
+    );
 
     console.log(`[OK] Mensaje guardado en la base de datos:`, message);
 
@@ -30,6 +39,35 @@ export const sendMessage = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "No se pudo enviar el mensaje" });
   }
 };
+
+
+
+
+/*
+export const sendMessage = async (req: Request, res: Response) => {
+  try {
+    const { chatId, sender, content,receiver } = req.body;
+
+    console.log(`[INFO] Datos recibidos para enviar el mensaje:`, req.body);
+
+    // Guardar el mensaje en la base de datos
+   const message = await messageService.sendMessage(chatId, sender, receiver, content);
+   //const message = await messageService.sendMessage(chatId, sender, "", content); // No es necesario "receiver" en grupos
+
+    console.log(`[OK] Mensaje guardado en la base de datos:`, message);
+
+    // Emitir el evento de nuevo mensaje al chat
+    req.app.get("socketio").to(chatId).emit("newMessage", message);
+
+    console.log(`[OK] Evento 'newMessage' emitido al chatId:`, chatId);
+
+    return res.status(201).json(message);
+  } catch (error) {
+    console.error(`[ERROR] Error al enviar el mensaje:`, error);
+    return res.status(500).json({ error: "No se pudo enviar el mensaje" });
+  }
+};
+*/
 
 /*
 export const sendMessage = async (req: Request, res: Response): Promise<Response> => {

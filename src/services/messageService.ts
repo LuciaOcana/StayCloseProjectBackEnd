@@ -97,7 +97,7 @@ import { MessageModel } from "../models/message";
 
 export const messageService = {
   // Servicio para enviar un mensaje
-  sendMessage: async (chatId: string, sender: string, receiver: string, content: string) => {
+  sendMessage: async (chatId: string, sender: string, receiver: string | null, content: string) => {
     try {
       console.log("Validando chatId:", chatId);
 

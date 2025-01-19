@@ -105,6 +105,53 @@ export const createOrGetChat = async (req: Request, res: Response) => {
   }
 };
 
+/*
+export const createGroupChat = async (req: Request, res: Response) => {
+  try {
+    const { groupName, participants } = req.body;
+
+    if (!groupName || !participants || participants.length < 2) {
+      return res.status(400).json({ error: "Se necesita un nombre de grupo y al menos 2 participantes." });
+    }
+
+    const groupChat = await chatService.createGroupChat(groupName, participants);
+    return res.status(201).json(groupChat);
+  } catch (error) {
+    console.error(`[ERROR] Error al crear el grupo: ${error}`);
+    return res.status(500).json({ error: "No se pudo crear el grupo." });
+  }
+};
+
+*/
+
+export const createGroupChat = async (req: Request, res: Response) => {
+  try {
+    const { groupName, participants } = req.body;
+
+    if (!groupName || !participants || participants.length < 2) {
+      return res
+        .status(400)
+        .json({ error: "Se necesita un nombre de grupo y al menos 2 participantes." });
+    }
+
+    // Crear el chat grupal
+    const groupChat = await ChatModel.create({
+      participants: participants,
+      groupName: groupName,
+      isGroupChat: true,
+      messages: [],
+    });
+
+    console.log("Grupo creado:", groupChat);
+
+    return res.status(201).json(groupChat); // Devuelve el chat recién creado
+  } catch (error) {
+    console.error(`[ERROR] Error al crear el grupo: ${error}`);
+    return res.status(500).json({ error: "No se pudo crear el grupo." });
+  }
+};
+
+
 
 
 
